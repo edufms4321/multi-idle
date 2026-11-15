@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=Silkscreen:wght@400;700&family=JetBrains+Mono:wght@500&display=swap">
 <style>html{color-scheme:dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <style>
-/* Layout: o produto é a prova. Herói com a janela do app e uma aprovação pendente; depois dor x solução, Piloto, controle, limites ditos com franqueza, preço. Pixel só na marca e nos selos; dourado só nas chamadas. Tema único, escuro, igual ao app. */
+/* Layout: o produto é a prova. Herói com o texto e, abaixo, a foto real do app na largura toda; depois dor x solução, Piloto, controle, limites ditos com franqueza, preço. Pixel só na marca e nos selos; dourado só nas chamadas. Tema único, escuro, igual ao app. */
 :root {
   --night: #0f0c1d;      /* fundo da página */
   --deep: #0a0815;       /* janela do app */
@@ -76,7 +76,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 /* herói */
 .hero { position: relative; padding-block: 64px 60px; overflow: hidden; }
 .hero::before { content: ""; position: absolute; inset: 0; background-image: linear-gradient(var(--line-soft) 1px, transparent 1px), linear-gradient(90deg, var(--line-soft) 1px, transparent 1px); background-size: 32px 32px; mask-image: radial-gradient(ellipse 65% 70% at 72% 45%, #000 15%, transparent 72%); -webkit-mask-image: radial-gradient(ellipse 65% 70% at 72% 45%, #000 15%, transparent 72%); opacity: .6; pointer-events: none; }
-.hero .wrap { position: relative; display: grid; grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr); gap: 52px; align-items: center; }
+.hero .wrap { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: 48px; }
+.hero .wrap > div:first-child { max-width: 760px; }
 .hero h1 { font-weight: 800; font-size: clamp(38px, 5.2vw, 64px); line-height: 1.02; margin-top: 16px; }
 .hero h1 em { font-style: normal; color: var(--gold); }
 .hero .lead { margin-top: 22px; font-size: 19px; color: var(--muted); max-width: 46ch; }
@@ -87,36 +88,12 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .trust li::before { content: ""; width: 8px; height: 8px; background: var(--mint); flex: none; }
 @media (max-width: 960px) { .hero .wrap { grid-template-columns: 1fr; gap: 40px; } .hero { padding-block: 40px 36px; } }
 
-/* janela do app */
-.shot { min-width: 0; }
-.app { background: var(--deep); box-shadow: inset 0 0 0 2px var(--line), 12px 12px 0 var(--shadow); }
-.app-bar { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-bottom: 2px solid var(--line); font-size: 12px; color: var(--muted); }
-.app-bar b { font-family: var(--f-pixel); color: var(--gold); font-size: 11.5px; letter-spacing: 1px; }
-.dots { margin-left: auto; display: flex; gap: 6px; } .dots i { width: 10px; height: 10px; background: var(--line); display: block; }
-.app-body { display: grid; grid-template-columns: 178px minmax(0, 1fr); }
-.side { border-right: 2px solid var(--line); padding: 8px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
-.acc { display: grid; grid-template-columns: 18px minmax(0, 1fr) 44px; gap: 2px 7px; align-items: center; padding: 6px 7px; background: var(--panel); font-size: 11px; line-height: 1.25; }
-.acc canvas { width: 18px; height: 18px; image-rendering: pixelated; grid-row: span 2; }
-.acc b { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.acc small { grid-column: 2; color: var(--mint); font-size: 10px; white-space: nowrap; }
-.acc svg { grid-row: span 2; grid-column: 3; grid-row-start: 1; width: 44px; height: 20px; }
-.inbox { margin-top: 2px; padding: 8px; background: var(--panel-2); box-shadow: inset 0 0 0 2px var(--amber); display: grid; gap: 6px; font-size: 11px; line-height: 1.35; }
-.inbox .h { font-family: var(--f-pixel); font-size: 9.5px; letter-spacing: 1px; color: var(--amber); }
-.inbox .acts { display: flex; gap: 5px; }
-.inbox .acts span { padding: 3px 8px; font-weight: 700; font-size: 10.5px; }
-.inbox .acts .y { background: var(--gold); color: var(--gold-ink); }
-.inbox .acts .n { box-shadow: inset 0 0 0 1px var(--line); color: var(--muted); }
-.grid4 { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; align-content: start; }
-.cell { background: var(--panel); display: flex; flex-direction: column; min-width: 0; }
-.cell-h { display: flex; align-items: center; gap: 5px; font-size: 10px; padding: 4px 6px; border-bottom: 1px solid var(--line); white-space: nowrap; overflow: hidden; }
-.cell-h .sq { width: 7px; height: 7px; background: var(--mint); flex: none; }
-.chip { margin-left: auto; font-size: 9px; padding: 1px 5px; box-shadow: inset 0 0 0 1px currentColor; }
-.chip.sky { color: var(--sky); } .chip.amber { color: var(--amber); } .chip.mint { color: var(--mint); }
-.cell canvas { width: 100%; height: auto; aspect-ratio: 16 / 10; display: block; image-rendering: pixelated; }
-.app-status { display: flex; gap: 14px; flex-wrap: wrap; border-top: 2px solid var(--line); padding: 7px 12px; font-size: 11px; color: var(--muted); }
-.app-status .ok { color: var(--mint); } .app-status .pl { color: var(--mint); margin-left: auto; }
-.shot-cap { margin-top: 18px; font-size: 12.5px; color: var(--muted); text-align: right; }
-@media (max-width: 560px) { .app-body { grid-template-columns: 1fr; } .side { border-right: 0; border-bottom: 2px solid var(--line); } .acc:nth-child(n+3) { display: none; } }
+/* fotos do app */
+.shot { min-width: 0; margin: 0; }
+.shot img, .side-shot img { display: block; width: 100%; height: auto; max-width: 100%; background: var(--deep); box-shadow: 0 0 0 2px var(--line), 12px 12px 0 var(--shadow); }
+.side-shot { margin: 0; justify-self: center; width: min(100%, 340px); }
+.side-shot img { max-height: 760px; object-fit: cover; object-position: top; }
+.shot-cap { margin-top: 16px; font-size: 13px; color: var(--muted); }
 
 /* números */
 .facts { border-block: 1px solid var(--line-soft); background: var(--panel); }
@@ -158,13 +135,8 @@ section + section { border-top: 1px solid var(--line-soft); }
 
 /* Piloto */
 .pilot { background: linear-gradient(180deg, var(--night) 0%, #130f28 16%, #130f28 84%, var(--night) 100%); }
-.pilot-top { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 48px; align-items: start; }
+.pilot-top { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 56px; align-items: start; }
 @media (max-width: 920px) { .pilot-top { grid-template-columns: 1fr; } }
-.approve { margin-top: 26px; background: var(--deep); box-shadow: inset 0 0 0 2px var(--line); padding: 18px; display: grid; gap: 12px; font-size: 15px; }
-.approve .tagline { font-family: var(--f-pixel); font-size: 10.5px; letter-spacing: 1.5px; color: var(--amber); }
-.approve .row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
-.approve .f { font-family: var(--f-mono); font-size: 13.5px; padding: 4px 10px; background: var(--panel-2); box-shadow: inset 0 0 0 2px var(--line); }
-.approve .cap { color: var(--muted); font-size: 13.5px; }
 .modes { display: grid; box-shadow: inset 0 0 0 2px var(--line); background: var(--panel); }
 .mode { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 16px; padding: 20px; }
 .mode + .mode { border-top: 1px solid var(--line); }
@@ -309,32 +281,13 @@ footer .legal { max-width: 90ch; }
         </ul>
       </div>
 
-      <div class="shot">
-        <div class="app" role="img" aria-label="Janela do Multi Idle: quatro contas do PokeIdle caçando lado a lado, com o resumo de cada uma na lateral e um pedido de aprovação de venda">
-          <div class="app-bar"><b>MULTI IDLE</b><span>4 ligadas · Piloto ligado</span><span class="dots"><i></i><i></i><i></i></span></div>
-          <div class="app-body">
-            <div class="side">
-              <div class="acc"><canvas data-seed="7" width="8" height="8"></canvas><b>Principal</b><small>nv 439 · 2,1 mi XP/h</small><svg data-spark="3" aria-hidden="true"></svg></div>
-              <div class="acc"><canvas data-seed="21" width="8" height="8"></canvas><b>Bulba</b><small>Outland · 390 abates/h</small><svg data-spark="9" aria-hidden="true"></svg></div>
-              <div class="acc"><canvas data-seed="44" width="8" height="8"></canvas><b>Squirtle</b><small>nv 154 · 610 mil XP/h</small><svg data-spark="14" aria-hidden="true"></svg></div>
-              <div class="acc"><canvas data-seed="90" width="8" height="8"></canvas><b>Chari</b><small>nv 83 · 240 mil XP/h</small><svg data-spark="27" aria-hidden="true"></svg></div>
-              <div class="inbox">
-                <span class="h">PARA VOCÊ · 1</span>
-                <span>Bulba: vender 7 Bronze Boss Token no Mercado. Líquido: 12 Gemas.</span>
-                <span class="acts"><span class="y">Aprovar</span><span class="n">Recusar</span></span>
-              </div>
-            </div>
-            <div class="grid4">
-              <div class="cell"><div class="cell-h"><i class="sq"></i>Principal<span class="chip mint">Piloto</span></div><canvas class="scene" data-seed="3" width="80" height="50"></canvas></div>
-              <div class="cell"><div class="cell-h"><i class="sq"></i>Bulba<span class="chip mint">Piloto</span></div><canvas class="scene" data-seed="11" width="80" height="50"></canvas></div>
-              <div class="cell"><div class="cell-h"><i class="sq"></i>Squirtle<span class="chip amber">você joga · 1:42</span></div><canvas class="scene" data-seed="29" width="80" height="50"></canvas></div>
-              <div class="cell"><div class="cell-h"><i class="sq"></i>Chari<span class="chip sky">ensaio</span></div><canvas class="scene" data-seed="57" width="80" height="50"></canvas></div>
-            </div>
-          </div>
-          <div class="app-status"><span class="ok">■ Tudo certo</span><span>Lives 2/4</span><span>Hoje: +31 níveis</span><span class="pl">20 automações</span></div>
-        </div>
-        <p class="shot-cap">Ilustração da tela do app, com números de exemplo.</p>
-      </div>
+      <figure class="shot">
+        <picture>
+          <source media="(max-width: 640px)" srcset="img/app-conta.webp">
+          <img src="img/app-grade.webp" width="1920" height="1044" alt="Janela do Multi Idle com quatro contas do PokeIdle caçando lado a lado, o painel do Piloto à esquerda com pedidos e o resumo de cada conta" fetchpriority="high">
+        </picture>
+        <figcaption class="shot-cap">Tela real do Multi Idle, sem montagem. Nomes de jogadores borrados.</figcaption>
+      </figure>
     </div>
   </div>
 
@@ -417,20 +370,19 @@ footer .legal { max-width: 90ch; }
             <h2>Ele cuida da rotina e pergunta antes de mexer no seu bolso</h2>
             <p>O Piloto lê a tela do jogo e aperta os botões certos: resgata o Passe, repõe poções, troca de hunt, volta depois que o time cai. Você liga cada automação conta por conta. O que envolve comprar ou vender chega como um pedido para você aprovar.</p>
           </div>
-          <div class="approve" aria-label="Exemplo de pedido de aprovação">
-            <span class="tagline">PARA VOCÊ</span>
-            <div class="row">Comprar <span class="f">Sceptile nv 435</span> por <span class="f">150 mi Coins</span></div>
-            <p class="cap">Simulado na sua hunt: 38% mais XP por hora que o pokémon atual. Aprovar ou recusar.</p>
-          </div>
-        </div>
-        <div class="modes">
+          <div class="modes" style="margin-top:32px">
           <div class="mode"><span class="tag" style="color:var(--sky)">ENSAIO</span>
             <div><h3>Primeiro, ele só mostra o que faria</h3><p>No começo o Piloto não toca no jogo. Ele escreve no Histórico cada ação que tomaria, e você confere com calma.</p></div></div>
           <div class="mode"><span class="tag" style="color:var(--mint)">LIGADO</span>
             <div><h3>Depois, ele age de verdade</h3><p>Ligue quando estiver confiante. O painel lateral mostra cada conta, quanto rende por hora e o que já foi feito hoje.</p></div></div>
           <div class="mode"><span class="tag" style="color:var(--amber)">VOCÊ JOGA</span>
             <div><h3>Ele nunca disputa o mouse</h3><p>Clicou dentro de uma conta? O Piloto pausa nela por 2 minutos e espera você terminar.</p></div></div>
+          </div>
         </div>
+        <figure class="side-shot">
+          <img src="img/app-piloto-lateral.webp" width="341" height="1112" loading="lazy" alt="Painel lateral do Piloto: pedidos em Para você e o resumo de cada conta com XP por hora, drops raros e trocas de área">
+          <figcaption class="shot-cap">O painel lateral de verdade: pedidos para aprovar e o resumo de cada conta.</figcaption>
+        </figure>
       </div>
 
       <div class="tabs" role="tablist" aria-label="Categorias de automação">
@@ -651,33 +603,7 @@ footer .legal { max-width: 90ch; }
     g.fillStyle = '#0f0c1d'; const ey = Math.floor(n * 0.4); g.fillRect(Math.floor(n * 0.3), ey, 1, 1); g.fillRect(n - 1 - Math.floor(n * 0.3), ey, 1, 1);
   }
   mascot(document.getElementById('logo'), 54);
-  document.querySelectorAll('canvas[data-seed]:not(.scene)').forEach((cv) => mascot(cv, Number(cv.dataset.seed)));
-
-  // mini-gráficos do resumo lateral (exemplo)
-  document.querySelectorAll('svg[data-spark]').forEach((sv) => {
-    const r = rnd(Number(sv.dataset.spark)); let v = 10; const pts = [];
-    for (let i = 0; i < 12; i++) { v = Math.max(3, Math.min(17, v + (r() - 0.42) * 6)); pts.push([2 + i * (40 / 11), 19 - v]); }
-    sv.setAttribute('viewBox', '0 0 44 20');
-    const d = pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' ');
-    const last = pts[pts.length - 1];
-    sv.innerHTML = '<path d="' + d + '" fill="none" stroke="#4fe0a6" stroke-width="1.5"/><rect x="' + (last[0] - 1.5).toFixed(1) + '" y="' + (last[1] - 1.5).toFixed(1) + '" width="3" height="3" fill="#ffd23f"/>';
-  });
-
-  // cenas de hunt em miniatura
-  const scenes = [...document.querySelectorAll('canvas.scene')].map((cv) => {
-    const r = rnd(Number(cv.dataset.seed)); const trees = []; for (let i = 0; i < 9; i++) trees.push([Math.floor(r() * 76), Math.floor(r() * 46)]);
-    return { cv, g: cv.getContext('2d'), trees, x: 20 + r() * 40, y: 15 + r() * 20, dx: r() > .5 ? .35 : -.35, dy: r() > .5 ? .2 : -.2, hue: PAL[Math.floor(r() * PAL.length)][0] };
-  });
-  function drawScene(s) {
-    const { g, cv } = s; g.fillStyle = '#2b5631'; g.fillRect(0, 0, cv.width, cv.height);
-    g.fillStyle = '#35683b'; for (let i = 0; i < 80; i += 6) for (let j = (i / 6) % 2 * 3; j < 50; j += 6) g.fillRect(i, j, 2, 1);
-    for (const [tx, ty] of s.trees) { g.fillStyle = '#1b3720'; g.fillRect(tx, ty, 5, 5); g.fillStyle = '#5b3a1e'; g.fillRect(tx + 2, ty + 5, 1, 2); }
-    g.fillStyle = s.hue; g.fillRect(Math.round(s.x), Math.round(s.y), 3, 3);
-    g.fillStyle = '#ffffff'; g.fillRect(Math.round(s.x) + 5, Math.round(s.y) - 1, 2, 2);
-  }
-  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  function tick() { for (const s of scenes) { s.x += s.dx; s.y += s.dy; if (s.x < 2 || s.x > 70) s.dx *= -1; if (s.y < 2 || s.y > 44) s.dy *= -1; drawScene(s); } if (!reduce) requestAnimationFrame(tick); }
-  scenes.forEach(drawScene); if (!reduce) requestAnimationFrame(tick);
+  
 
   // as 20 automações do Piloto, por categoria
   const R = {
