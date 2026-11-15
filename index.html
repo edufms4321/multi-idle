@@ -1,0 +1,732 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Abra até 4 contas do PokeIdle lado a lado no Windows, mantenha todas caçando com a janela minimizada e deixe a rotina com o Piloto. Grátis para uma conta.">
+<meta name="theme-color" content="#0f0c1d">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Multi Idle: suas contas do PokeIdle farmando juntas">
+<meta property="og:description" content="Abra até 4 contas do PokeIdle lado a lado no Windows, mantenha todas caçando com a janela minimizada e deixe a rotina com o Piloto. Grátis para uma conta.">
+<meta property="og:url" content="https://edufms4321.github.io/multi-idle/">
+<link rel="canonical" href="https://edufms4321.github.io/multi-idle/">
+<link rel="icon" href="icon.png">
+<title>Multi Idle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=Silkscreen:wght@400;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>html{color-scheme:dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>
+/* Layout: o produto é a prova. Herói com a janela do app e uma aprovação pendente; depois dor x solução, Piloto, controle, limites ditos com franqueza, preço. Pixel só na marca e nos selos; dourado só nas chamadas. Tema único, escuro, igual ao app. */
+:root {
+  --night: #0f0c1d;      /* fundo da página */
+  --deep: #0a0815;       /* janela do app */
+  --panel: #171329;      /* superfícies */
+  --panel-2: #1f1938;    /* realce */
+  --line: #2f2759;       /* bordas */
+  --line-soft: #221c40;  /* divisórias */
+  --ink: #f1eeff;        /* texto */
+  --muted: #a49ec6;      /* texto secundário */
+  --gold: #ffd23f;       /* chamada */
+  --gold-ink: #241800;
+  --gold-edge: #8a6400;
+  --mint: #4fe0a6;       /* ligado, grátis, sim */
+  --sky: #74b8ff;        /* ensaio, informação */
+  --amber: #ffad4f;      /* você decide */
+  --rose: #ff8a9a;       /* sem o app */
+  --shadow: #05040b;
+  --f-display: "Bricolage Grotesque", "Figtree", system-ui, sans-serif;
+  --f-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-pixel: "Silkscreen", "Courier New", monospace;
+  --f-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--night); color: var(--ink); font-family: var(--f-body); font-size: 16.5px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1160px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+a { color: var(--gold); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; line-height: 1.1; margin: 0; letter-spacing: -.02em; }
+p { margin: 0; }
+.eyebrow { font-family: var(--f-pixel); font-size: 11.5px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); }
+.kbd { font-family: var(--f-mono); font-size: 12.5px; padding: 1px 6px; box-shadow: inset 0 0 0 1px var(--line); background: var(--deep); white-space: nowrap; }
+.num { font-variant-numeric: tabular-nums; }
+
+/* topo */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 21; background: var(--night); }
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: rgba(15, 12, 29, .92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line-soft); }
+.top .wrap { display: flex; align-items: center; gap: 20px; padding-block: 12px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--gold); font-family: var(--f-pixel); font-weight: 700; font-size: 16px; letter-spacing: 1px; }
+.brand canvas { width: 26px; height: 26px; image-rendering: pixelated; }
+.top nav { display: flex; gap: 24px; margin-left: auto; }
+.top nav a { color: var(--muted); text-decoration: none; font-weight: 500; font-size: 15px; }
+.top nav a:hover { color: var(--ink); }
+@media (max-width: 860px) { .top nav { display: none; } .top .btn { margin-left: auto; } }
+
+/* botões */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 14px 24px; font-family: var(--f-body); font-weight: 700; font-size: 16px; text-decoration: none; border: 0; cursor: pointer; background: var(--panel-2); color: var(--ink); box-shadow: inset 0 0 0 2px var(--line), 4px 4px 0 var(--shadow); transition: transform .08s, box-shadow .08s; }
+.btn:hover { transform: translate(-1px, -1px); box-shadow: inset 0 0 0 2px var(--line), 5px 5px 0 var(--shadow); }
+.btn:active { transform: translate(2px, 2px); box-shadow: inset 0 0 0 2px var(--line), 2px 2px 0 var(--shadow); }
+.btn.gold { background: var(--gold); color: var(--gold-ink); box-shadow: inset 0 0 0 2px var(--gold-edge), 4px 4px 0 var(--shadow); }
+.btn.gold:hover { box-shadow: inset 0 0 0 2px var(--gold-edge), 5px 5px 0 var(--shadow); }
+.btn.ghost { background: transparent; box-shadow: inset 0 0 0 2px var(--line); }
+.btn.small { padding: 8px 14px; font-size: 14px; }
+.btn svg { width: 18px; height: 18px; flex: none; }
+
+/* herói */
+.hero { position: relative; padding-block: 64px 60px; overflow: hidden; }
+.hero::before { content: ""; position: absolute; inset: 0; background-image: linear-gradient(var(--line-soft) 1px, transparent 1px), linear-gradient(90deg, var(--line-soft) 1px, transparent 1px); background-size: 32px 32px; mask-image: radial-gradient(ellipse 65% 70% at 72% 45%, #000 15%, transparent 72%); -webkit-mask-image: radial-gradient(ellipse 65% 70% at 72% 45%, #000 15%, transparent 72%); opacity: .6; pointer-events: none; }
+.hero .wrap { position: relative; display: grid; grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr); gap: 52px; align-items: center; }
+.hero h1 { font-weight: 800; font-size: clamp(38px, 5.2vw, 64px); line-height: 1.02; margin-top: 16px; }
+.hero h1 em { font-style: normal; color: var(--gold); }
+.hero .lead { margin-top: 22px; font-size: 19px; color: var(--muted); max-width: 46ch; }
+.hero .ctas { margin-top: 30px; display: flex; gap: 14px; flex-wrap: wrap; }
+.sub-cta { margin-top: 14px; font-size: 14px; color: var(--muted); }
+.trust { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 14px; color: var(--muted); list-style: none; padding: 0; }
+.trust li { display: flex; align-items: center; gap: 8px; }
+.trust li::before { content: ""; width: 8px; height: 8px; background: var(--mint); flex: none; }
+@media (max-width: 960px) { .hero .wrap { grid-template-columns: 1fr; gap: 40px; } .hero { padding-block: 40px 36px; } }
+
+/* janela do app */
+.shot { min-width: 0; }
+.app { background: var(--deep); box-shadow: inset 0 0 0 2px var(--line), 12px 12px 0 var(--shadow); }
+.app-bar { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-bottom: 2px solid var(--line); font-size: 12px; color: var(--muted); }
+.app-bar b { font-family: var(--f-pixel); color: var(--gold); font-size: 11.5px; letter-spacing: 1px; }
+.dots { margin-left: auto; display: flex; gap: 6px; } .dots i { width: 10px; height: 10px; background: var(--line); display: block; }
+.app-body { display: grid; grid-template-columns: 178px minmax(0, 1fr); }
+.side { border-right: 2px solid var(--line); padding: 8px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.acc { display: grid; grid-template-columns: 18px minmax(0, 1fr) 44px; gap: 2px 7px; align-items: center; padding: 6px 7px; background: var(--panel); font-size: 11px; line-height: 1.25; }
+.acc canvas { width: 18px; height: 18px; image-rendering: pixelated; grid-row: span 2; }
+.acc b { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.acc small { grid-column: 2; color: var(--mint); font-size: 10px; white-space: nowrap; }
+.acc svg { grid-row: span 2; grid-column: 3; grid-row-start: 1; width: 44px; height: 20px; }
+.inbox { margin-top: 2px; padding: 8px; background: var(--panel-2); box-shadow: inset 0 0 0 2px var(--amber); display: grid; gap: 6px; font-size: 11px; line-height: 1.35; }
+.inbox .h { font-family: var(--f-pixel); font-size: 9.5px; letter-spacing: 1px; color: var(--amber); }
+.inbox .acts { display: flex; gap: 5px; }
+.inbox .acts span { padding: 3px 8px; font-weight: 700; font-size: 10.5px; }
+.inbox .acts .y { background: var(--gold); color: var(--gold-ink); }
+.inbox .acts .n { box-shadow: inset 0 0 0 1px var(--line); color: var(--muted); }
+.grid4 { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; align-content: start; }
+.cell { background: var(--panel); display: flex; flex-direction: column; min-width: 0; }
+.cell-h { display: flex; align-items: center; gap: 5px; font-size: 10px; padding: 4px 6px; border-bottom: 1px solid var(--line); white-space: nowrap; overflow: hidden; }
+.cell-h .sq { width: 7px; height: 7px; background: var(--mint); flex: none; }
+.chip { margin-left: auto; font-size: 9px; padding: 1px 5px; box-shadow: inset 0 0 0 1px currentColor; }
+.chip.sky { color: var(--sky); } .chip.amber { color: var(--amber); } .chip.mint { color: var(--mint); }
+.cell canvas { width: 100%; height: auto; aspect-ratio: 16 / 10; display: block; image-rendering: pixelated; }
+.app-status { display: flex; gap: 14px; flex-wrap: wrap; border-top: 2px solid var(--line); padding: 7px 12px; font-size: 11px; color: var(--muted); }
+.app-status .ok { color: var(--mint); } .app-status .pl { color: var(--mint); margin-left: auto; }
+.shot-cap { margin-top: 18px; font-size: 12.5px; color: var(--muted); text-align: right; }
+@media (max-width: 560px) { .app-body { grid-template-columns: 1fr; } .side { border-right: 0; border-bottom: 2px solid var(--line); } .acc:nth-child(n+3) { display: none; } }
+
+/* números */
+.facts { border-block: 1px solid var(--line-soft); background: var(--panel); }
+.facts .wrap { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; padding-block: 26px; }
+.fact b { display: block; font-family: var(--f-display); font-weight: 800; font-size: 30px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.fact span { font-size: 14px; color: var(--muted); }
+@media (max-width: 720px) { .facts .wrap { grid-template-columns: 1fr 1fr; } }
+
+/* seções */
+section { padding-block: 92px; }
+section + section { border-top: 1px solid var(--line-soft); }
+.sec-head { max-width: 60ch; display: grid; gap: 14px; margin-bottom: 44px; }
+.sec-head h2 { font-size: clamp(29px, 3.6vw, 44px); font-weight: 800; }
+.sec-head p { color: var(--muted); font-size: 18px; }
+@media (max-width: 600px) { section { padding-block: 60px; } }
+
+/* antes e depois */
+.ba { display: grid; grid-template-columns: 1fr 1fr; box-shadow: inset 0 0 0 2px var(--line); background: var(--panel); }
+.ba > div { padding: 30px; display: grid; gap: 18px; align-content: start; }
+.ba > div + div { border-left: 1px solid var(--line); background: var(--panel-2); }
+.ba h3 { font-family: var(--f-pixel); font-weight: 400; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; }
+.ba .without h3 { color: var(--rose); } .ba .with h3 { color: var(--mint); }
+.ba ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.ba li { display: grid; grid-template-columns: 12px minmax(0, 1fr); gap: 12px; font-size: 16px; }
+.ba li::before { content: ""; width: 8px; height: 8px; margin-top: 9px; }
+.ba .without li { color: var(--muted); } .ba .without li::before { background: var(--rose); opacity: .7; }
+.ba .with li::before { background: var(--mint); }
+@media (max-width: 760px) { .ba { grid-template-columns: 1fr; } .ba > div + div { border-left: 0; border-top: 1px solid var(--line); } .ba > div { padding: 22px; } }
+
+/* recursos */
+.features { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px 36px; }
+.feat { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 4px 16px; align-content: start; }
+.feat .ic { grid-row: span 2; width: 44px; height: 44px; display: grid; place-items: center; background: var(--panel-2); box-shadow: inset 0 0 0 2px var(--line); }
+.feat .ic svg { width: 22px; height: 22px; color: var(--gold); }
+.feat h3 { font-family: var(--f-body); letter-spacing: 0; font-size: 17.5px; font-weight: 700; padding-top: 2px; line-height: 1.3; }
+.feat p { color: var(--muted); font-size: 15.5px; }
+@media (max-width: 920px) { .features { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 600px) { .features { grid-template-columns: 1fr; gap: 28px; } }
+
+/* Piloto */
+.pilot { background: linear-gradient(180deg, var(--night) 0%, #130f28 16%, #130f28 84%, var(--night) 100%); }
+.pilot-top { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 48px; align-items: start; }
+@media (max-width: 920px) { .pilot-top { grid-template-columns: 1fr; } }
+.approve { margin-top: 26px; background: var(--deep); box-shadow: inset 0 0 0 2px var(--line); padding: 18px; display: grid; gap: 12px; font-size: 15px; }
+.approve .tagline { font-family: var(--f-pixel); font-size: 10.5px; letter-spacing: 1.5px; color: var(--amber); }
+.approve .row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.approve .f { font-family: var(--f-mono); font-size: 13.5px; padding: 4px 10px; background: var(--panel-2); box-shadow: inset 0 0 0 2px var(--line); }
+.approve .cap { color: var(--muted); font-size: 13.5px; }
+.modes { display: grid; box-shadow: inset 0 0 0 2px var(--line); background: var(--panel); }
+.mode { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 16px; padding: 20px; }
+.mode + .mode { border-top: 1px solid var(--line); }
+.mode .tag { font-family: var(--f-pixel); font-size: 10.5px; padding: 5px 0; text-align: center; height: fit-content; box-shadow: inset 0 0 0 2px currentColor; }
+.mode h3 { font-family: var(--f-body); letter-spacing: 0; font-size: 16.5px; font-weight: 700; margin-bottom: 4px; line-height: 1.3; }
+.mode p { color: var(--muted); font-size: 15px; }
+@media (max-width: 420px) { .mode { grid-template-columns: 1fr; } .mode .tag { width: fit-content; padding: 4px 8px; } }
+.tabs { display: flex; gap: 6px; flex-wrap: wrap; margin: 56px 0 18px; }
+.tab { font-family: var(--f-body); font-weight: 700; font-size: 15px; padding: 9px 16px; border: 0; cursor: pointer; background: transparent; color: var(--muted); box-shadow: inset 0 0 0 2px var(--line); }
+.tab:hover { color: var(--ink); }
+.tab[aria-selected="true"] { background: var(--gold); color: var(--gold-ink); box-shadow: inset 0 0 0 2px var(--gold-edge); }
+.recipes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-content: start; }
+@media (max-width: 720px) { .recipes { grid-template-columns: 1fr; } }
+.rcp { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 14px; padding: 18px; background: var(--panel); box-shadow: inset 0 0 0 2px var(--line); }
+.rcp h3 { font-family: var(--f-body); letter-spacing: 0; font-size: 16px; font-weight: 700; line-height: 1.3; }
+.rcp p { grid-column: 1 / -1; color: var(--muted); font-size: 14.5px; }
+.badge { font-family: var(--f-pixel); font-size: 10px; padding: 2px 7px; height: fit-content; white-space: nowrap; letter-spacing: .5px; }
+.badge.free { color: var(--mint); box-shadow: inset 0 0 0 2px var(--mint); }
+.badge.pro { color: var(--gold); box-shadow: inset 0 0 0 2px var(--gold); }
+
+/* controle e limites */
+.two { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 20px; align-items: stretch; }
+@media (max-width: 920px) { .two { grid-template-columns: 1fr; } }
+.guard { display: grid; grid-template-columns: 1fr 1fr; gap: 0; box-shadow: inset 0 0 0 2px var(--line); background: var(--panel); }
+.guard div { padding: 22px; display: grid; gap: 6px; align-content: start; border-bottom: 1px solid var(--line); }
+.guard div:nth-child(odd) { border-right: 1px solid var(--line); }
+.guard div:nth-last-child(-n+2) { border-bottom: 0; }
+.guard b { font-size: 16px; display: flex; align-items: center; gap: 9px; }
+.guard b::before { content: ""; width: 8px; height: 8px; background: var(--sky); flex: none; }
+.guard span { font-size: 14.5px; color: var(--muted); }
+@media (max-width: 520px) { .guard { grid-template-columns: 1fr; } .guard div { border-right: 0 !important; border-bottom: 1px solid var(--line) !important; } .guard div:last-child { border-bottom: 0 !important; } }
+.limits { padding: 26px; background: var(--deep); box-shadow: inset 0 0 0 2px var(--line); display: grid; gap: 16px; align-content: start; }
+.limits h3 { font-size: 22px; font-weight: 700; }
+.limits ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.limits li { display: grid; grid-template-columns: 12px minmax(0, 1fr); gap: 12px; font-size: 15px; color: var(--muted); }
+.limits li::before { content: ""; width: 8px; height: 2px; margin-top: 12px; background: var(--muted); }
+.limits li b { color: var(--ink); font-weight: 600; }
+
+/* passos */
+.steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); counter-reset: s; box-shadow: inset 0 0 0 2px var(--line); background: var(--panel); }
+.step { counter-increment: s; padding: 28px; display: grid; gap: 10px; align-content: start; }
+.step + .step { border-left: 1px solid var(--line); }
+.step::before { content: counter(s); font-family: var(--f-pixel); font-size: 28px; color: var(--gold); line-height: 1; }
+.step h3 { font-size: 20px; font-weight: 700; }
+.step p { color: var(--muted); font-size: 15px; }
+@media (max-width: 820px) { .steps { grid-template-columns: 1fr; } .step + .step { border-left: 0; border-top: 1px solid var(--line); } }
+
+/* preços */
+.prices { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; align-items: stretch; }
+@media (max-width: 1000px) { .prices { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .prices { grid-template-columns: 1fr; } }
+.price { position: relative; padding: 26px 22px; background: var(--panel); box-shadow: inset 0 0 0 2px var(--line); display: flex; flex-direction: column; gap: 14px; }
+.price.best { background: var(--panel-2); box-shadow: inset 0 0 0 3px var(--gold), 8px 8px 0 var(--shadow); }
+.price .ribbon { position: absolute; top: -12px; left: 22px; font-family: var(--f-pixel); font-size: 10.5px; letter-spacing: 1px; padding: 3px 10px; background: var(--gold); color: var(--gold-ink); }
+.price h3 { font-family: var(--f-body); font-size: 14px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; }
+.amount { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+.amount .cur { font-size: 18px; font-weight: 600; color: var(--muted); }
+.amount .val { font-family: var(--f-display); font-size: 44px; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+.amount .per { font-size: 14px; color: var(--muted); }
+.price .note { font-size: 14.5px; color: var(--muted); min-height: 46px; }
+.price .note b { color: var(--mint); font-weight: 600; }
+.price ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; font-size: 14.5px; }
+.price li { display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 10px; }
+.price li::before { content: ""; width: 8px; height: 8px; margin-top: 8px; background: var(--gold); }
+.price.free li::before { background: var(--mint); }
+.price .btn { margin-top: auto; width: 100%; }
+.pay { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: 14px; color: var(--muted); }
+.pay span { display: flex; align-items: center; gap: 8px; }
+.pay span::before { content: ""; width: 6px; height: 6px; background: var(--muted); }
+.compare-wrap { margin-top: 56px; overflow-x: auto; box-shadow: inset 0 0 0 2px var(--line); background: var(--panel); }
+table.compare { width: 100%; border-collapse: collapse; min-width: 540px; font-size: 15px; }
+.compare th, .compare td { padding: 14px 18px; text-align: left; border-bottom: 1px solid var(--line-soft); }
+.compare thead th { font-family: var(--f-pixel); font-size: 11.5px; letter-spacing: 1px; color: var(--muted); font-weight: 400; background: var(--deep); }
+.compare thead th:last-child { color: var(--gold); }
+.compare td:not(:first-child), .compare th:not(:first-child) { text-align: center; width: 20%; }
+.compare tbody tr:last-child td { border-bottom: 0; }
+.yes { color: var(--mint); font-weight: 600; } .no { color: var(--muted); opacity: .6; }
+
+/* FAQ */
+.faq-grid { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.6fr); gap: 48px; align-items: start; }
+@media (max-width: 920px) { .faq-grid { grid-template-columns: 1fr; gap: 0; } }
+.faq { display: grid; box-shadow: inset 0 0 0 2px var(--line); background: var(--panel); }
+details + details { border-top: 1px solid var(--line); }
+summary { cursor: pointer; list-style: none; padding: 18px 20px; font-weight: 600; font-size: 16.5px; display: flex; gap: 12px; align-items: center; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; margin-left: auto; font-family: var(--f-pixel); color: var(--gold); font-size: 18px; flex: none; }
+details[open] summary::after { content: "–"; }
+details .ans { padding: 0 20px 20px; color: var(--muted); font-size: 15.5px; display: grid; gap: 10px; max-width: 68ch; }
+
+/* chamada final */
+.final .box { background: var(--panel-2); box-shadow: inset 0 0 0 3px var(--gold), 10px 10px 0 var(--shadow); padding: 44px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 28px; align-items: center; }
+.final h2 { font-size: clamp(28px, 3.6vw, 42px); font-weight: 800; }
+.final p { color: var(--muted); max-width: 54ch; margin-top: 12px; font-size: 17px; }
+.final .ctas { display: flex; flex-direction: column; gap: 12px; }
+@media (max-width: 820px) { .final .box { grid-template-columns: 1fr; padding: 28px; } }
+
+footer { border-top: 1px solid var(--line-soft); padding-block: 32px; color: var(--muted); font-size: 13.5px; }
+footer .wrap { display: grid; gap: 14px; }
+footer .rowf { display: flex; flex-wrap: wrap; gap: 12px 28px; align-items: center; }
+footer .brandf { font-family: var(--f-pixel); color: var(--gold); letter-spacing: 1px; font-size: 14px; }
+footer nav { margin-left: auto; display: flex; gap: 20px; flex-wrap: wrap; }
+footer a { color: var(--muted); text-decoration: none; } footer a:hover { color: var(--ink); }
+footer .legal { max-width: 90ch; }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#inicio" aria-label="Multi Idle, início"><canvas id="logo" width="16" height="16" aria-hidden="true"></canvas>MULTI IDLE</a>
+    <nav aria-label="Seções">
+      <a href="#recursos">Recursos</a>
+      <a href="#piloto">Piloto</a>
+      <a href="#controle">Segurança</a>
+      <a href="#planos">Preços</a>
+      <a href="#faq">Dúvidas</a>
+    </nav>
+    <a class="btn gold small" href="https://github.com/edufms4321/multi-idle-releases/releases/latest" target="_blank" rel="noopener">Baixar grátis</a>
+  </div>
+</header>
+
+<main id="inicio">
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Para PokeIdle · Windows 10 e 11</p>
+        <h1>Suas contas farmando juntas. <em>Você só decide o que importa.</em></h1>
+        <p class="lead">O Multi Idle abre até 4 contas do PokeIdle lado a lado, mantém todas caçando mesmo com a janela minimizada e cuida da rotina: Passe, poções, troca de hunt, Mercado. Compra e venda só acontecem com a sua aprovação.</p>
+        <div class="ctas">
+          <a class="btn gold" href="https://github.com/edufms4321/multi-idle-releases/releases/latest" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M12 3v12M6 10l6 6 6-6M4 20h16"/></svg>
+            Baixar grátis para Windows
+          </a>
+          <a class="btn ghost" href="#planos">Ver planos</a>
+        </div>
+        <p class="sub-cta">Grátis para uma conta, sem cartão. Pro a partir de R$ 9,90.</p>
+        <ul class="trust">
+          <li>Sem anúncios</li>
+          <li>Senhas só no seu PC</li>
+          <li>Atualiza sozinho</li>
+        </ul>
+      </div>
+
+      <div class="shot">
+        <div class="app" role="img" aria-label="Janela do Multi Idle: quatro contas do PokeIdle caçando lado a lado, com o resumo de cada uma na lateral e um pedido de aprovação de venda">
+          <div class="app-bar"><b>MULTI IDLE</b><span>4 ligadas · Piloto ligado</span><span class="dots"><i></i><i></i><i></i></span></div>
+          <div class="app-body">
+            <div class="side">
+              <div class="acc"><canvas data-seed="7" width="8" height="8"></canvas><b>Principal</b><small>nv 439 · 2,1 mi XP/h</small><svg data-spark="3" aria-hidden="true"></svg></div>
+              <div class="acc"><canvas data-seed="21" width="8" height="8"></canvas><b>Bulba</b><small>Outland · 390 abates/h</small><svg data-spark="9" aria-hidden="true"></svg></div>
+              <div class="acc"><canvas data-seed="44" width="8" height="8"></canvas><b>Squirtle</b><small>nv 154 · 610 mil XP/h</small><svg data-spark="14" aria-hidden="true"></svg></div>
+              <div class="acc"><canvas data-seed="90" width="8" height="8"></canvas><b>Chari</b><small>nv 83 · 240 mil XP/h</small><svg data-spark="27" aria-hidden="true"></svg></div>
+              <div class="inbox">
+                <span class="h">PARA VOCÊ · 1</span>
+                <span>Bulba: vender 7 Bronze Boss Token no Mercado. Líquido: 12 Gemas.</span>
+                <span class="acts"><span class="y">Aprovar</span><span class="n">Recusar</span></span>
+              </div>
+            </div>
+            <div class="grid4">
+              <div class="cell"><div class="cell-h"><i class="sq"></i>Principal<span class="chip mint">Piloto</span></div><canvas class="scene" data-seed="3" width="80" height="50"></canvas></div>
+              <div class="cell"><div class="cell-h"><i class="sq"></i>Bulba<span class="chip mint">Piloto</span></div><canvas class="scene" data-seed="11" width="80" height="50"></canvas></div>
+              <div class="cell"><div class="cell-h"><i class="sq"></i>Squirtle<span class="chip amber">você joga · 1:42</span></div><canvas class="scene" data-seed="29" width="80" height="50"></canvas></div>
+              <div class="cell"><div class="cell-h"><i class="sq"></i>Chari<span class="chip sky">ensaio</span></div><canvas class="scene" data-seed="57" width="80" height="50"></canvas></div>
+            </div>
+          </div>
+          <div class="app-status"><span class="ok">■ Tudo certo</span><span>Lives 2/4</span><span>Hoje: +31 níveis</span><span class="pl">20 automações</span></div>
+        </div>
+        <p class="shot-cap">Ilustração da tela do app, com números de exemplo.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="facts">
+    <div class="wrap">
+      <div class="fact"><b>4</b><span>contas lado a lado, o limite do próprio jogo</span></div>
+      <div class="fact"><b>20</b><span>automações prontas no Piloto, 6 delas grátis</span></div>
+      <div class="fact"><b>24 h</b><span>caçando, com a janela minimizada ou escondida</span></div>
+      <div class="fact"><b>0</b><span>compras ou vendas sem você aprovar</span></div>
+    </div>
+  </div>
+
+  <section id="por-que">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Por que usar</p>
+        <h2>Jogar com várias contas no navegador dá trabalho demais</h2>
+        <p>Quem tem mais de uma conta conhece a rotina. O Multi Idle foi feito para acabar com ela.</p>
+      </div>
+      <div class="ba">
+        <div class="without">
+          <h3>No navegador</h3>
+          <ul>
+            <li>A aba minimizada desacelera e a conta para de render.</li>
+            <li>O time cai de madrugada e a conta passa a noite parada.</li>
+            <li>Um dia sem resgatar o Passe e a trilha volta ao Dia 1.</li>
+            <li>Login caindo, janela anônima, perfil trocado: toda hora refazendo.</li>
+            <li>Você não sabe quanto cada conta rende nem o que caiu de raro.</li>
+          </ul>
+        </div>
+        <div class="with">
+          <h3>No Multi Idle</h3>
+          <ul>
+            <li>Todas as contas na velocidade cheia, mesmo com a janela escondida.</li>
+            <li>O Piloto cura a equipe, repõe poções e volta para a mesma hunt.</li>
+            <li>O Passe é resgatado logo depois da meia-noite, em todas as contas.</li>
+            <li>Cada conta tem o próprio login guardado, separado das outras.</li>
+            <li>XP por hora, drops raros e um resumo do dia para cada conta.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="recursos">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Recursos</p>
+        <h2>Um app feito só para isso</h2>
+      </div>
+      <div class="features">
+        <div class="feat"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 3h8v8H3zM13 3h8v8h-8zM3 13h8v8H3zM13 13h8v8h-8z"/></svg></span>
+          <h3>Contas lado a lado</h3><p>Grade, uma conta principal com as outras ao lado, foco numa só ou um painel com o resumo de todas. Cada conta no próprio espaço.</p></div>
+        <div class="feat"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9M12 7v5l3 2M17 3h4v4"/></svg></span>
+          <h3>Nunca dorme</h3><p>Minimizado, atrás de outra janela ou na bandeja do Windows, as contas continuam caçando na mesma velocidade.</p></div>
+        <div class="feat"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 4-6"/></svg></span>
+          <h3>Página de cada conta</h3><p>Gráficos de 7 dias de XP, Coins e abates, previsão de quando a conta chega ao próximo nível-chave, drops raros e o resumo do dia.</p></div>
+        <div class="feat"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 11h14v10H5zM8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
+          <h3>Cofre de logins</h3><p>Se a sessão cair, o app preenche a tela de login. A senha fica criptografada pelo Windows no seu PC e nunca vai para a internet.</p></div>
+        <div class="feat"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 5h16v11H4zM9 20h6M12 16v4"/></svg></span>
+          <h3>Lives da Twitch e da Kick</h3><p>Cada conta assiste às lives oficiais com o próprio login para juntar pontos do canal. As lives rodam separadas, sem pesar nas contas.</p></div>
+        <div class="feat"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 3h10v18H7zM11 18h2"/></svg></span>
+          <h3>Jogou no celular? Ele volta</h3><p>Quando aparece "Conta aberta em outro lugar", o app confere a cada minuto e retoma a conta no PC assim que você sai do celular.</p></div>
+        <div class="feat"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 3h6v4H9zM5 7h14v14H5zM9 12h6M9 16h4"/></svg></span>
+          <h3>Extensões do Chrome</h3><p>Instale extensões como a /hunt e escolha em quais contas cada uma roda.</p></div>
+        <div class="feat"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3c4 4 6 7 6 10a6 6 0 0 1-12 0c0-3 2-6 6-10z"/></svg></span>
+          <h3>Leve no PC</h3><p>Contas fora da tela gastam menos placa de vídeo. A conta que passar do limite de memória é reaberta sozinha, na hora em que está parada.</p></div>
+        <div class="feat"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 18a5 5 0 1 1 1-9.9A6 6 0 0 1 19 10a4 4 0 0 1-1 8z"/></svg></span>
+          <h3>Sua configuração em qualquer PC</h3><p>Entre com e-mail, Google ou Discord e as contas, os grupos e os ajustes vêm junto. Copie as automações de uma conta para as outras num clique.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="piloto" class="pilot">
+    <div class="wrap">
+      <div class="pilot-top">
+        <div>
+          <div class="sec-head" style="margin-bottom:0">
+            <p class="eyebrow">O Piloto</p>
+            <h2>Ele cuida da rotina e pergunta antes de mexer no seu bolso</h2>
+            <p>O Piloto lê a tela do jogo e aperta os botões certos: resgata o Passe, repõe poções, troca de hunt, volta depois que o time cai. Você liga cada automação conta por conta. O que envolve comprar ou vender chega como um pedido para você aprovar.</p>
+          </div>
+          <div class="approve" aria-label="Exemplo de pedido de aprovação">
+            <span class="tagline">PARA VOCÊ</span>
+            <div class="row">Comprar <span class="f">Sceptile nv 435</span> por <span class="f">150 mi Coins</span></div>
+            <p class="cap">Simulado na sua hunt: 38% mais XP por hora que o pokémon atual. Aprovar ou recusar.</p>
+          </div>
+        </div>
+        <div class="modes">
+          <div class="mode"><span class="tag" style="color:var(--sky)">ENSAIO</span>
+            <div><h3>Primeiro, ele só mostra o que faria</h3><p>No começo o Piloto não toca no jogo. Ele escreve no Histórico cada ação que tomaria, e você confere com calma.</p></div></div>
+          <div class="mode"><span class="tag" style="color:var(--mint)">LIGADO</span>
+            <div><h3>Depois, ele age de verdade</h3><p>Ligue quando estiver confiante. O painel lateral mostra cada conta, quanto rende por hora e o que já foi feito hoje.</p></div></div>
+          <div class="mode"><span class="tag" style="color:var(--amber)">VOCÊ JOGA</span>
+            <div><h3>Ele nunca disputa o mouse</h3><p>Clicou dentro de uma conta? O Piloto pausa nela por 2 minutos e espera você terminar.</p></div></div>
+        </div>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="Categorias de automação">
+        <button class="tab" role="tab" id="t-dia" aria-selected="true" aria-controls="p-recipes" data-cat="dia">Todo dia</button>
+        <button class="tab" role="tab" id="t-caca" aria-selected="false" aria-controls="p-recipes" data-cat="caca">Caça</button>
+        <button class="tab" role="tab" id="t-merc" aria-selected="false" aria-controls="p-recipes" data-cat="merc">Mercado</button>
+        <button class="tab" role="tab" id="t-depot" aria-selected="false" aria-controls="p-recipes" data-cat="depot">Depot</button>
+        <button class="tab" role="tab" id="t-cal" aria-selected="false" aria-controls="p-recipes" data-cat="cal">Calendário</button>
+      </div>
+      <div class="recipes" id="p-recipes" role="tabpanel" aria-labelledby="t-dia"></div>
+    </div>
+  </section>
+
+  <section id="controle">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Segurança</p>
+        <h2>Você no controle, o tempo todo</h2>
+        <p>Automação boa é a que você consegue conferir, limitar e desligar.</p>
+      </div>
+      <div class="two">
+        <div class="guard">
+          <div><b>Nada é vendido sem aprovação</b><span>Anúncios no Mercado e compras de pokémon chegam como pedido. O modo automático existe, mas começa desligado.</span></div>
+          <div><b>O saque é sempre seu</b><span>O app nunca clica em sacar. Tirar Gemas do jogo é uma decisão que só você toma.</span></div>
+          <div><b>Tetos de gasto</b><span>Limite de Coins por dia no estoque e no Mercado. As Gemas só entram se você liberar.</span></div>
+          <div><b>Pausar tudo</b><span>Um botão sempre à vista, ou <span class="kbd">Ctrl+Shift+P</span>.</span></div>
+          <div><b>Senhas só no seu PC</b><span>Criptografadas pelo Windows. Não vão para a nuvem nem para ninguém.</span></div>
+          <div><b>Histórico completo</b><span>Cada ação fica registrada por conta, com exportação em planilha.</span></div>
+        </div>
+        <div class="limits">
+          <h3>O que o Multi Idle não faz</h3>
+          <ul>
+            <li><span><b>Não promete dinheiro.</b> Ele faz suas contas renderem mais e mostra o que vale vender. Quanto cai e por quanto vende depende do jogo.</span></li>
+            <li><span><b>Não fura o limite do jogo.</b> O PokeIdle aceita 4 contas por internet, e o app avisa quando você passa disso.</span></li>
+            <li><span><b>Não vende por fora.</b> Tudo passa pelo Mercado da Comunidade, dentro do jogo.</span></li>
+            <li><span><b>Não roda com o PC desligado.</b> O jogo caça enquanto a página está aberta.</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="comecar">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Como começar</p>
+        <h2>Em cinco minutos suas contas estão caçando</h2>
+      </div>
+      <div class="steps">
+        <div class="step"><h3>Baixe e instale</h3><p>Abra o instalador. Se o Windows mostrar "O Windows protegeu o computador", clique em <b>Mais informações</b> e em <b>Executar assim mesmo</b>. O app abre sozinho no fim.</p></div>
+        <div class="step"><h3>Adicione suas contas</h3><p>Aperte <span class="kbd">Ctrl+N</span>, escolha o PokeIdle e entre com o login da conta. Repita para as outras.</p></div>
+        <div class="step"><h3>Ligue o Piloto</h3><p>Abra o <b>Piloto</b>, ligue as automações que quiser e deixe no Ensaio por um tempo. Conferiu o Histórico? Ligue de verdade.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="planos">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Preços</p>
+        <h2>Grátis para uma conta. Pro para todas</h2>
+        <p>Sem renovação automática: o Pro vale pelo período que você pagou e nada é cobrado depois.</p>
+      </div>
+      <div class="prices">
+        <div class="price free">
+          <h3>Gratuito</h3>
+          <div class="amount"><span class="cur">R$</span><span class="val">0</span></div>
+          <p class="note">Para quem joga com uma conta, sem prazo.</p>
+          <ul>
+            <li>1 conta ligada por vez</li>
+            <li>6 automações do Piloto</li>
+            <li>Cofre, página da conta e avisos</li>
+            <li>Sincronização entre PCs</li>
+          </ul>
+          <a class="btn ghost" href="https://github.com/edufms4321/multi-idle-releases/releases/latest" target="_blank" rel="noopener">Baixar grátis</a>
+        </div>
+        <div class="price">
+          <h3>Pro mensal</h3>
+          <div class="amount"><span class="cur">R$</span><span class="val">9,90</span><span class="per">por 30 dias</span></div>
+          <p class="note">Para conhecer o Pro sem compromisso.</p>
+          <ul>
+            <li>Todas as contas ligadas</li>
+            <li>As 20 automações do Piloto</li>
+            <li>Lives e extensões</li>
+          </ul>
+          <a class="btn" href="https://github.com/edufms4321/multi-idle-releases/releases/latest" target="_blank" rel="noopener">Baixar e assinar no app</a>
+        </div>
+        <div class="price best">
+          <span class="ribbon">MAIS ESCOLHIDO</span>
+          <h3>Pro anual</h3>
+          <div class="amount"><span class="cur">R$</span><span class="val">79,90</span><span class="per">por 12 meses</span></div>
+          <p class="note">Sai por <b>R$ 6,66 por mês</b>, 33% a menos que pagar mês a mês.</p>
+          <ul>
+            <li>Tudo do Pro mensal</li>
+            <li>Um pagamento só no ano</li>
+          </ul>
+          <a class="btn gold" href="https://github.com/edufms4321/multi-idle-releases/releases/latest" target="_blank" rel="noopener">Baixar e assinar no app</a>
+        </div>
+        <div class="price">
+          <h3>Pro vitalício</h3>
+          <div class="amount"><span class="cur">R$</span><span class="val">149,90</span><span class="per">uma vez</span></div>
+          <p class="note">Paga uma vez e usa enquanto o Multi Idle existir, com todas as atualizações.</p>
+          <ul>
+            <li>Tudo do Pro, sem prazo</li>
+            <li>Sem mensalidade</li>
+          </ul>
+          <a class="btn" href="https://github.com/edufms4321/multi-idle-releases/releases/latest" target="_blank" rel="noopener">Baixar e assinar no app</a>
+        </div>
+      </div>
+      <div class="pay">
+        <span>Pix ou cartão pelo Mercado Pago, dentro do app</span>
+        <span>Tem cupom? Resgate em "Meu plano"</span>
+        <span>O Pro vale na sua conta Multi Idle, em qualquer PC</span>
+        <span>Desistiu? Reembolso integral em até 7 dias</span>
+      </div>
+
+      <div class="compare-wrap">
+        <table class="compare">
+          <thead><tr><th scope="col">Recurso</th><th scope="col">Gratuito</th><th scope="col">Pro</th></tr></thead>
+          <tbody>
+            <tr><td>Contas cadastradas</td><td class="yes">Sem limite</td><td class="yes">Sem limite</td></tr>
+            <tr><td>Contas ligadas ao mesmo tempo</td><td class="num">1</td><td class="yes">Todas</td></tr>
+            <tr><td>Cofre de logins, página da conta e modo leve</td><td class="yes">Sim</td><td class="yes">Sim</td></tr>
+            <tr><td>Piloto: Passe, avisos, rendimento, resumo do dia, Guerra</td><td class="yes">Sim</td><td class="yes">Sim</td></tr>
+            <tr><td>Piloto: estoque, voltar e subir de hunt, Depot, Raid, Showdown</td><td class="no">Não</td><td class="yes">Sim</td></tr>
+            <tr><td>Piloto: Mercado, Vendedor e Pokémon certo</td><td class="no">Não</td><td class="yes">Sim</td></tr>
+            <tr><td>Lives da Twitch e da Kick</td><td class="no">Não</td><td class="yes">Sim</td></tr>
+            <tr><td>Extensões do Chrome (como a /hunt)</td><td class="no">Não</td><td class="yes">Sim</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap faq-grid">
+      <div class="sec-head">
+        <p class="eyebrow">Dúvidas</p>
+        <h2>Perguntas frequentes</h2>
+      </div>
+      <div class="faq">
+        <details open><summary>Automatizar é permitido no PokeIdle?</summary>
+          <div class="ans"><p>A Wiki do PokeIdle diz que os Termos de Uso permitem automações, no jogo e no Mercado, e o próprio jogo divulga uma extensão de automação no Discord oficial. As regras de conduta valem para todo mundo, jogando na mão ou com automação. Se os Termos mudarem, o app muda junto.</p></div></details>
+        <details><summary>Dá para ganhar dinheiro com isso?</summary>
+          <div class="ans"><p>O PokeIdle deixa vender itens raros por Gemas, que podem ser sacadas. O Multi Idle ajuda a farmar mais, avisa quando cai algo raro e mostra o melhor preço para anunciar. Ele não promete renda: o que cai e por quanto vende depende do jogo e dos outros jogadores.</p></div></details>
+        <details><summary>Quantas contas posso abrir?</summary>
+          <div class="ans"><p>No Pro, o Multi Idle não tem limite próprio. Quem limita é o PokeIdle: até 4 contas por internet. O app avisa quando você passa disso.</p></div></details>
+        <details><summary>O PC precisa ficar ligado?</summary>
+          <div class="ans"><p>Precisa. O PokeIdle caça enquanto a página estiver aberta. O Multi Idle garante que as contas não parem com a janela minimizada ou escondida. Ao fechar no X, escolha "Continuar rodando em segundo plano".</p></div></details>
+        <details><summary>O Piloto pode estragar minhas contas?</summary>
+          <div class="ans"><p>Ele começa no Ensaio, sem tocar em nada, e só age depois que você liga. Vender e oferendar pokémon usa os botões oficiais do jogo, que protegem shiny, P5, a Coleção e a equipe. Compras e anúncios no Mercado pedem a sua aprovação, e você pode pausar tudo a qualquer momento.</p></div></details>
+        <details><summary>Minhas senhas ficam seguras?</summary>
+          <div class="ans"><p>As senhas do cofre ficam criptografadas pelo próprio Windows, só no seu PC. Elas não vão para a nuvem. O app preenche a tela de login, mas nunca clica em entrar sozinho.</p></div></details>
+        <details><summary>Como pago e o que acontece depois?</summary>
+          <div class="ans"><p>Dentro do app, em "Meu plano", escolha o plano e pague por Pix ou cartão pelo Mercado Pago. Quando o pagamento é aprovado, o Pro é liberado na sua conta Multi Idle sozinho.</p></div></details>
+        <details><summary>O Pro renova sozinho?</summary>
+          <div class="ans"><p>Não. O mensal e o anual valem pelo período pago e acabam sem cobrança automática. O app avisa 7, 3 e 1 dia antes de acabar. Se renovar antes do fim, o tempo novo soma ao que ainda falta.</p></div></details>
+        <details><summary>E se eu me arrepender da compra?</summary>
+          <div class="ans"><p>Peça o reembolso em até 7 dias depois de pagar, sem precisar explicar o motivo. O valor volta inteiro pelo mesmo meio de pagamento. Os detalhes estão nos <a href="termos.html">Termos de uso</a>.</p></div></details>
+        <details><summary>Por que o Windows avisa que o app pode ser perigoso?</summary>
+          <div class="ans"><p>O SmartScreen avisa sobre programas novos que ainda não têm assinatura digital paga. Clique em "Mais informações" e em "Executar assim mesmo". As atualizações seguintes chegam sozinhas, sem esse passo.</p></div></details>
+        <details><summary>Pesa muito no computador?</summary>
+          <div class="ans"><p>Cada conta usa de 200 a 300 MB de memória no começo e cresce com as horas. O app reabre sozinho a conta que passar do limite. Com 4 contas e 4 lives juntas, PCs mais simples podem sentir: nesse caso, ligue menos lives.</p></div></details>
+        <details><summary>Funciona no celular ou no Mac?</summary>
+          <div class="ans"><p>Por enquanto só no Windows 10 e 11. O jogo continua funcionando no celular: quando você sai dele, o Multi Idle retoma a conta no PC.</p></div></details>
+        <details><summary>Ainda não jogo PokeIdle. Por onde começo?</summary>
+          <div class="ans"><p>Instale o Multi Idle, aperte <span class="kbd">Ctrl+N</span> e escolha "Criar conta nova no PokeIdle". O jogo é gratuito e roda no navegador.</p></div></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="final">
+    <div class="wrap">
+      <div class="box">
+        <div>
+          <h2>Ligue as contas e deixe a rotina com o Piloto</h2>
+          <p>Baixe, adicione sua primeira conta e veja o Ensaio trabalhando. É grátis para uma conta e você decide depois se quer o Pro.</p>
+        </div>
+        <div class="ctas">
+          <a class="btn gold" href="https://github.com/edufms4321/multi-idle-releases/releases/latest" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M12 3v12M6 10l6 6 6-6M4 20h16"/></svg>
+            Baixar grátis para Windows
+          </a>
+          <a class="btn ghost" href="#planos">Ver planos</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="rowf">
+      <span class="brandf">MULTI IDLE</span>
+      <nav aria-label="Rodapé">
+        <a href="#planos">Preços</a>
+        <a href="#faq">Dúvidas</a>
+        <a href="termos.html">Termos e privacidade</a>
+        <a href="https://github.com/edufms4321/multi-idle-releases/releases" target="_blank" rel="noopener">Todas as versões</a>
+      </nav>
+    </div>
+    <p class="legal">O Multi Idle é uma ferramenta independente, feita por jogadores. Não é afiliado, patrocinado nem endossado pelo PokeIdle, pela Nintendo, pela Game Freak ou pela The Pokémon Company. Os nomes citados pertencem aos seus donos e aparecem só para dizer com o que o app funciona.</p>
+  </div>
+</footer>
+
+<script>
+(() => {
+  // mascotes pixel gerados de uma semente (como os do app)
+  const PAL = [['#ffd23f', '#8a6400'], ['#4fe0a6', '#16704f'], ['#74b8ff', '#1f4f8a'], ['#ff7ac8', '#8a2a63'], ['#b48cff', '#4b2d8a'], ['#ffad4f', '#8a4b00']];
+  function rnd(seed) { let s = seed * 9301 + 49297; return () => (s = (s * 9301 + 49297) % 233280) / 233280; }
+  function mascot(cv, seed) {
+    const g = cv.getContext('2d'); const n = cv.width; const r = rnd(seed); const [c, d] = PAL[seed % PAL.length];
+    g.clearRect(0, 0, n, n);
+    for (let y = 0; y < n; y++) for (let x = 0; x < Math.ceil(n / 2); x++) {
+      const v = r(); if (v < 0.45) continue;
+      g.fillStyle = v > 0.85 ? d : c; g.fillRect(x, y, 1, 1); g.fillRect(n - 1 - x, y, 1, 1);
+    }
+    g.fillStyle = '#0f0c1d'; const ey = Math.floor(n * 0.4); g.fillRect(Math.floor(n * 0.3), ey, 1, 1); g.fillRect(n - 1 - Math.floor(n * 0.3), ey, 1, 1);
+  }
+  mascot(document.getElementById('logo'), 54);
+  document.querySelectorAll('canvas[data-seed]:not(.scene)').forEach((cv) => mascot(cv, Number(cv.dataset.seed)));
+
+  // mini-gráficos do resumo lateral (exemplo)
+  document.querySelectorAll('svg[data-spark]').forEach((sv) => {
+    const r = rnd(Number(sv.dataset.spark)); let v = 10; const pts = [];
+    for (let i = 0; i < 12; i++) { v = Math.max(3, Math.min(17, v + (r() - 0.42) * 6)); pts.push([2 + i * (40 / 11), 19 - v]); }
+    sv.setAttribute('viewBox', '0 0 44 20');
+    const d = pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' ');
+    const last = pts[pts.length - 1];
+    sv.innerHTML = '<path d="' + d + '" fill="none" stroke="#4fe0a6" stroke-width="1.5"/><rect x="' + (last[0] - 1.5).toFixed(1) + '" y="' + (last[1] - 1.5).toFixed(1) + '" width="3" height="3" fill="#ffd23f"/>';
+  });
+
+  // cenas de hunt em miniatura
+  const scenes = [...document.querySelectorAll('canvas.scene')].map((cv) => {
+    const r = rnd(Number(cv.dataset.seed)); const trees = []; for (let i = 0; i < 9; i++) trees.push([Math.floor(r() * 76), Math.floor(r() * 46)]);
+    return { cv, g: cv.getContext('2d'), trees, x: 20 + r() * 40, y: 15 + r() * 20, dx: r() > .5 ? .35 : -.35, dy: r() > .5 ? .2 : -.2, hue: PAL[Math.floor(r() * PAL.length)][0] };
+  });
+  function drawScene(s) {
+    const { g, cv } = s; g.fillStyle = '#2b5631'; g.fillRect(0, 0, cv.width, cv.height);
+    g.fillStyle = '#35683b'; for (let i = 0; i < 80; i += 6) for (let j = (i / 6) % 2 * 3; j < 50; j += 6) g.fillRect(i, j, 2, 1);
+    for (const [tx, ty] of s.trees) { g.fillStyle = '#1b3720'; g.fillRect(tx, ty, 5, 5); g.fillStyle = '#5b3a1e'; g.fillRect(tx + 2, ty + 5, 1, 2); }
+    g.fillStyle = s.hue; g.fillRect(Math.round(s.x), Math.round(s.y), 3, 3);
+    g.fillStyle = '#ffffff'; g.fillRect(Math.round(s.x) + 5, Math.round(s.y) - 1, 2, 2);
+  }
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function tick() { for (const s of scenes) { s.x += s.dx; s.y += s.dy; if (s.x < 2 || s.x > 70) s.dx *= -1; if (s.y < 2 || s.y > 44) s.dy *= -1; drawScene(s); } if (!reduce) requestAnimationFrame(tick); }
+  scenes.forEach(drawScene); if (!reduce) requestAnimationFrame(tick);
+
+  // as 20 automações do Piloto, por categoria
+  const R = {
+    dia: [
+      ['Resgatar o Passe todo dia', 'free', 'Logo depois da meia-noite, em todas as contas. Perder um dia volta a trilha ao Dia 1.'],
+      ['Avisos de shiny e drop raro', 'free', 'Aviso no Windows para shiny, drop raro, time caído ou XP parado.'],
+      ['Anotar quanto cada conta rende', 'free', 'XP, Coins e abates por hora, com gráficos de 7 dias e previsão da próxima meta.'],
+      ['Resumo do dia', 'free', 'Às 23:55 escreve o dia de cada conta: níveis, Coins, Gemas, abates, drops, vendas e compras.'],
+      ['Deixar o PC leve', 'free', 'Conta que sai da tela liga o Modo ULTRA Economia do jogo. Quando aparece, volta ao normal.'],
+      ['Comprar poções, bolas e ovos', 'pro', 'Quando um item chega ao limite, compra a quantidade que você marcou, com teto de gasto por dia.'],
+      ['Perfil padrão de conta', 'pro', 'Aplica num clique as configurações do jogo que você usa: Revive, Poções, Auto Coleção.'],
+    ],
+    caca: [
+      ['Voltar à hunt depois que o time cai', 'pro', 'Cura a equipe, compra o que faltar e volta para a mesma área. Para se o time cair seguido.'],
+      ['Subir de hunt sozinho', 'pro', 'Troca para a área liberada que rende ao menos 10% mais XP. No modo Outland, mantém a conta só onde caem os tokens e fragmentos raros.'],
+      ['Pokémon certo', 'pro', 'Simula os pokémon à venda na sua hunt e propõe o que mais aumenta o XP por hora. Só compra se você aprovar.'],
+      ['Dia Sazonal', 'pro', 'Às 18:00 põe em campo o pokémon do tipo do dia, que bate o dobro nas hunts.'],
+    ],
+    merc: [
+      ['Banco de preços', 'pro', 'Guarda de hora em hora o menor preço de cada item do Mercado, em Coins e em Gemas.'],
+      ['O que tenho para vender', 'pro', 'Lê a Mochila e mostra quanto vale cada item que pode ser anunciado.'],
+      ['Vendedor', 'pro', 'Propõe anunciar tokens e fragmentos pelo melhor preço em Gemas, já com a comissão descontada. Você aprova cada anúncio.'],
+      ['Caçador de pechincha', 'pro', 'Compra pedras e fragmentos quando aparecem até o seu preço-teto. Só com Coins.'],
+    ],
+    depot: [
+      ['Sacrifício esperto', 'pro', 'Junta os pokémon nota 3,5+ no altar e só resgata com a barra cheia: 14 dias de +20% de XP.'],
+      ['Limpar o Depot', 'pro', 'Oferenda ou vende o Depot pelo botão oficial do jogo, que protege shiny, P5 e Coleção.'],
+    ],
+    cal: [
+      ['Lembrar da Guerra de Guilds', 'free', 'Um aviso minutos antes da guerra do dia.'],
+      ['Inscrever no Raid Gigantamax', 'pro', 'Toda terça, com 1 Bronze Boss Token: até +20% de XP por 12 horas.'],
+      ['Inscrever no Showdown', 'pro', 'Toda semana, para contas nível 100 ou mais. Inscrição grátis.'],
+    ],
+  };
+  const panel = document.getElementById('p-recipes');
+  const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  function show(cat) {
+    panel.innerHTML = R[cat].map(([t, p, d]) => `<div class="rcp"><h3>${esc(t)}</h3><span class="badge ${p}">${p === 'free' ? 'GRÁTIS' : 'PRO'}</span><p>${esc(d)}</p></div>`).join('');
+    document.querySelectorAll('.tab').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.cat === cat)));
+    panel.setAttribute('aria-labelledby', 't-' + cat);
+  }
+  document.querySelectorAll('.tab').forEach((b) => b.addEventListener('click', () => show(b.dataset.cat)));
+  document.querySelector('.tabs').addEventListener('keydown', (e) => {
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+    const tabs = [...document.querySelectorAll('.tab')]; const i = tabs.findIndex((t) => t.getAttribute('aria-selected') === 'true');
+    const n = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length]; n.focus(); show(n.dataset.cat);
+  });
+  show('dia');
+})();
+</script>
+</body>
+</html>
