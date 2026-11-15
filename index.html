@@ -258,6 +258,33 @@ footer .legal { max-width: 90ch; }
 .contact-note { color: var(--muted); font-size: 14px; margin-top: 12px; }
 @media (max-width: 860px) { .contact-grid { grid-template-columns: 1fr; gap: 24px; } }
 @media (max-width: 520px) { .contact-form .row2 { grid-template-columns: 1fr; } .contact-form { padding: 18px; } }
+/* demo + regras + transparência */
+.hero-pilo { display: flex; align-items: center; gap: 14px; margin-top: 26px; font-size: 15px; color: var(--muted); }
+.hero-pilo img { width: 56px; height: 56px; image-rendering: pixelated; flex: none; }
+.hero-pilo b { color: var(--ink); }
+.demo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 340px); gap: 48px; align-items: center; }
+.demo video { display: block; width: 100%; max-width: 340px; aspect-ratio: 9 / 16; height: auto; background: var(--deep); box-shadow: 0 0 0 2px var(--line), 12px 12px 0 var(--shadow); justify-self: center; }
+.clock { list-style: none; padding: 0; margin: 0; display: grid; gap: 0; box-shadow: inset 0 0 0 2px var(--line); background: var(--panel); }
+.clock li { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 16px; padding: 16px 20px; border-bottom: 1px solid var(--line); align-items: baseline; }
+.clock li:last-child { border-bottom: 0; }
+.clock b { font-family: var(--f-pixel); font-size: 13px; letter-spacing: 1px; color: var(--gold); }
+@media (max-width: 860px) { .demo { grid-template-columns: 1fr; gap: 32px; } }
+@media (max-width: 480px) { .clock li { grid-template-columns: 1fr; gap: 4px; } }
+.rules { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; }
+.rules blockquote { margin: 0; padding: 24px; background: var(--panel); box-shadow: inset 0 0 0 2px var(--line); display: grid; gap: 12px; }
+.rules blockquote p { margin: 0; }
+.rules cite { font-style: normal; font-size: 14px; color: var(--muted); }
+.rules cite a { color: var(--sky); }
+.rules ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
+.rules li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; }
+.rules li::before { content: ""; width: 10px; height: 10px; margin-top: 8px; background: var(--mint); }
+@media (max-width: 860px) { .rules { grid-template-columns: 1fr; } }
+.transp { margin-top: 20px; padding: 24px; background: var(--panel); box-shadow: inset 0 0 0 2px var(--line); display: grid; gap: 14px; }
+.transp dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 8px 18px; margin: 0; }
+.transp dt { color: var(--muted); font-size: 14px; }
+.transp dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.transp code { font-family: var(--f-mono, ui-monospace, monospace); font-size: 13px; }
+@media (max-width: 520px) { .transp dl { grid-template-columns: 1fr; gap: 2px; } .transp dd { margin-bottom: 8px; } }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 </head>
@@ -268,6 +295,7 @@ footer .legal { max-width: 90ch; }
     <nav aria-label="Seções">
       <a href="#recursos">Recursos</a>
       <a href="#piloto">Piloto</a>
+      <a href="#regras">Dá ban?</a>
       <a href="#controle">Segurança</a>
       <a href="#planos">Preços</a>
       <a href="#faq">Dúvidas</a>
@@ -282,8 +310,8 @@ footer .legal { max-width: 90ch; }
     <div class="wrap">
       <div>
         <p class="eyebrow">Para PokeIdle · Windows 10 e 11</p>
-        <h1>Suas contas farmando juntas. <em>Você só decide o que importa.</em></h1>
-        <p class="lead">O Multi Idle abre até 4 contas do PokeIdle lado a lado, mantém todas caçando mesmo com a janela minimizada e cuida da rotina: Passe, poções, troca de hunt, Mercado. Compra e venda só acontecem com a sua aprovação.</p>
+        <h1>O piloto das suas contas do PokeIdle. <em>Ele trabalha no horário. Você decide o que importa.</em></h1>
+        <p class="lead">Até 4 contas lado a lado, caçando mesmo com a janela minimizada. A cada 20 segundos ele confere se o time caiu; de hora em hora anota os preços do Mercado; à meia-noite resgata o Passe. Comprar e vender, só com o seu ok.</p>
         <div class="ctas">
           <a class="btn gold" href="https://github.com/edufms4321/multi-idle-releases/releases/latest/download/Multi-Idle-Setup.exe" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M12 3v12M6 10l6 6 6-6M4 20h16"/></svg>
@@ -292,6 +320,7 @@ footer .legal { max-width: 90ch; }
           <a class="btn ghost" href="#planos">Ver planos</a>
         </div>
         <p class="sub-cta">7 dias com tudo liberado, sem cartão. Depois, grátis para até 4 contas.</p>
+        <p class="hero-pilo"><img src="img/pilo.png" width="56" height="56" alt=""><span><b>Prazer, eu sou o Pilo.</b> Não sou bot: uso os botões do próprio jogo e paro em 4 contas.</span></p>
         <ul class="trust">
           <li>Sem anúncios</li>
           <li>Senhas só no seu PC</li>
@@ -311,12 +340,62 @@ footer .legal { max-width: 90ch; }
 
   <div class="facts">
     <div class="wrap">
-      <div class="fact"><b>4</b><span>contas lado a lado, o limite do próprio jogo</span></div>
+      <div class="fact"><b>20 s</b><span>entre cada conferida se o time caiu</span></div>
+      <div class="fact"><b>1 h</b><span>entre cada leitura dos preços do Mercado</span></div>
       <div class="fact"><b>20</b><span>automações prontas no Piloto, 6 delas grátis</span></div>
-      <div class="fact"><b>24 h</b><span>caçando, com a janela minimizada ou escondida</span></div>
       <div class="fact"><b>0</b><span>compras ou vendas sem você aprovar</span></div>
     </div>
   </div>
+
+  <section id="demo">
+    <div class="wrap demo">
+      <div>
+        <div class="sec-head">
+          <p class="eyebrow">Um dia do Piloto</p>
+          <h2>O que ele faz enquanto você dorme</h2>
+          <p>Cada automação tem horário ou intervalo fixo, e você liga só as que quiser, conta por conta.</p>
+        </div>
+        <ul class="clock">
+          <li><b>A CADA 20 S</b><span>Confere se o time caiu. Se caiu, cura, compra o que faltar e volta para a mesma hunt.</span></li>
+          <li><b>A CADA 30 S</b><span>Olha se saiu shiny ou drop raro e avisa no Windows. Grátis.</span></li>
+          <li><b>A CADA 3 MIN</b><span>Procura no Mercado o item que você quer, até o preço-teto que você marcou. Só com Coins.</span></li>
+          <li><b>A CADA 30 MIN</b><span>Vê se já liberou uma hunt que rende pelo menos 10% mais.</span></li>
+          <li><b>DE HORA EM HORA</b><span>Anota o menor preço de cada item do Mercado, em Coins e em Gemas.</span></li>
+          <li><b>00:01</b><span>Resgata o Passe em todas as contas. Grátis.</span></li>
+          <li><b>23:55</b><span>Escreve o resumo do dia de cada conta. Grátis.</span></li>
+        </ul>
+      </div>
+      <video src="img/demo-piloto.mp4" poster="img/demo-piloto.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Vídeo de 38 segundos: o Pilo mostra, com telas reais do app, o que o Piloto fez nas contas durante a noite"></video>
+    </div>
+  </section>
+
+  <section id="regras">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">A dúvida número 1</p>
+        <h2>Usar programa para abrir 4 contas dá ban?</h2>
+        <p>A resposta está nos Termos do próprio PokeIdle, seção 5. Resumimos aqui; leia o original no site do jogo.</p>
+      </div>
+      <div class="rules">
+        <blockquote>
+          <p><b>Automação é permitida</b>, no jogo e no Mercado, desde que não explore falhas, não burle os limites do jogo e não sobrecarregue o servidor.</p>
+          <p><b>Cada pessoa pode ter até 4 contas.</b> Mais que isso leva a banimento de todas.</p>
+          <p><b>Negociar só pelo Mercado da Comunidade.</b> Venda por fora é proibida.</p>
+          <cite>Resumo dos <a href="https://pokeidle.io/terms" target="_blank" rel="noopener">Termos do PokeIdle, seção 5</a>, lidos em 15/11/2026. Se os Termos mudarem, o app muda junto.</cite>
+        </blockquote>
+        <div>
+          <h3 style="margin-bottom:18px">Por que o Piloto não é bot</h3>
+          <ul>
+            <li><span>Usa só os botões do próprio jogo, no ritmo de uma pessoa: no mínimo 1,5 s entre uma ação e outra.</span></li>
+            <li><span>Para em 4 contas e avisa se você passar do limite da sua internet.</span></li>
+            <li><span>Pausa a conta por 2 minutos sempre que você clica nela.</span></li>
+            <li><span>Nunca contorna captcha, nunca saca Gemas, nunca negocia fora do Mercado.</span></li>
+            <li><span>Compra e venda chegam como pedido para você aprovar.</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <section id="por-que">
     <div class="wrap">
@@ -440,6 +519,17 @@ footer .legal { max-width: 90ch; }
           </ul>
         </div>
       </div>
+      <div class="transp" id="transparencia">
+        <h3>Transparência</h3>
+        <dl>
+          <dt>Versão atual</dt><dd id="tr-ver">veja em <a href="https://github.com/edufms4321/multi-idle-releases/releases/latest" target="_blank" rel="noopener">github.com/edufms4321/multi-idle-releases</a></dd>
+          <dt>Publicada em</dt><dd id="tr-date">no mesmo link</dd>
+          <dt>SHA-256 do instalador</dt><dd><code id="tr-hash">no mesmo link, ao lado de cada arquivo</code></dd>
+          <dt>Fica só no seu PC</dt><dd>Logins e senhas do cofre (criptografados pelo Windows), cookies das contas, histórico do Piloto.</dd>
+          <dt>Vai para o servidor</dt><dd>Sua conta Multi Idle, o plano, a configuração sincronizada entre PCs e um sinal de uso a cada 5 minutos.</dd>
+          <dt>Aviso do Windows</dt><dd>O instalador ainda não tem assinatura paga, então o Windows mostra "O Windows protegeu o computador". Confira o SHA-256 acima, clique em Mais informações e em Executar assim mesmo.</dd>
+        </dl>
+      </div>
     </div>
   </section>
 
@@ -543,11 +633,13 @@ footer .legal { max-width: 90ch; }
       </div>
       <div class="faq">
         <details open><summary>Automatizar é permitido no PokeIdle?</summary>
-          <div class="ans"><p>A Wiki do PokeIdle diz que os Termos de Uso permitem automações, no jogo e no Mercado, e o próprio jogo divulga uma extensão de automação no Discord oficial. As regras de conduta valem para todo mundo, jogando na mão ou com automação. Se os Termos mudarem, o app muda junto.</p></div></details>
+          <div class="ans"><p>Sim. A seção 5 dos Termos do PokeIdle permite automações, no jogo e no Mercado, desde que não explorem falhas, não burlem limites e não sobrecarreguem o servidor; o próprio jogo divulga uma extensão de automação no Discord oficial. Veja o resumo na seção <a href="#regras">Dá ban?</a>. Se os Termos mudarem, o app muda junto.</p></div></details>
         <details><summary>Dá para ganhar dinheiro com isso?</summary>
           <div class="ans"><p>O PokeIdle deixa vender itens raros por Gemas, que podem ser sacadas. O Multi Idle ajuda a farmar mais, avisa quando cai algo raro e mostra o melhor preço para anunciar. Ele não promete renda: o que cai e por quanto vende depende do jogo e dos outros jogadores.</p></div></details>
+        <details><summary>Como o Multi Idle ganha dinheiro?</summary>
+          <div class="ans"><p>Só com o Pro. O grátis não tem anúncio nem coleta de dados para vender. O Pro paga o servidor e o tempo de quem desenvolve, e libera as 14 automações que dão mais trabalho para manter.</p></div></details>
         <details><summary>Quantas contas posso abrir?</summary>
-          <div class="ans"><p>No Pro, o Multi Idle não tem limite próprio. Quem limita é o PokeIdle: até 4 contas por internet. O app avisa quando você passa disso.</p></div></details>
+          <div class="ans"><p>Até 4, no grátis e no Pro. É o limite do próprio PokeIdle: 4 contas por pessoa e por internet. O app avisa quando você passa disso.</p></div></details>
         <details><summary>O PC precisa ficar ligado?</summary>
           <div class="ans"><p>Precisa. O PokeIdle caça enquanto a página estiver aberta. O Multi Idle garante que as contas não parem com a janela minimizada ou escondida. Ao fechar no X, escolha "Continuar rodando em segundo plano".</p></div></details>
         <details><summary>O Piloto pode estragar minhas contas?</summary>
@@ -640,6 +732,18 @@ footer .legal { max-width: 90ch; }
 </footer>
 
 <script>
+// Transparência: versão, data e SHA-256 do instalador direto da API pública do GitHub. Sem resposta, fica o texto fixo.
+(function () {
+  try {
+    fetch('https://api.github.com/repos/edufms4321/multi-idle-releases/releases/latest').then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+      if (!d || !d.tag_name) return;
+      var exe = (d.assets || []).filter(function (a) { return /^Multi-Idle-Setup-.*\.exe$/.test(a.name); })[0];
+      document.getElementById('tr-ver').textContent = d.tag_name.replace(/^v/, '');
+      document.getElementById('tr-date').textContent = new Date(d.published_at).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' });
+      if (exe && exe.digest) document.getElementById('tr-hash').textContent = exe.digest.replace(/^sha256:/, '');
+    }).catch(function () {});
+  } catch (e) {}
+})();
 (() => {
   // mascotes pixel gerados de uma semente (como os do app)
   const PAL = [['#ffd23f', '#8a6400'], ['#4fe0a6', '#16704f'], ['#74b8ff', '#1f4f8a'], ['#ff7ac8', '#8a2a63'], ['#b48cff', '#4b2d8a'], ['#ffad4f', '#8a4b00']];
