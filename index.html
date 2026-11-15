@@ -241,6 +241,23 @@ footer nav { margin-left: auto; display: flex; gap: 20px; flex-wrap: wrap; }
 footer a { color: var(--muted); text-decoration: none; } footer a:hover { color: var(--ink); }
 footer .legal { max-width: 90ch; }
 
+/* Fale comigo */
+.contact-grid { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.6fr); gap: 48px; align-items: start; }
+.contact-form { display: grid; gap: 14px; background: var(--panel); box-shadow: inset 0 0 0 2px var(--line); padding: 26px; }
+.contact-form .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.contact-form label { display: grid; gap: 6px; font-weight: 600; font-size: 14px; }
+.contact-form label span { color: var(--muted); font-weight: 400; }
+.contact-form input, .contact-form select, .contact-form textarea { font: inherit; font-size: 16px; color: var(--ink); background: var(--night); border: 0; box-shadow: inset 0 0 0 2px var(--line); padding: 11px 12px; border-radius: 0; width: 100%; }
+.contact-form textarea { min-height: 140px; resize: vertical; line-height: 1.5; }
+.contact-form input:focus, .contact-form select:focus, .contact-form textarea:focus { outline: none; box-shadow: inset 0 0 0 2px var(--gold); }
+.contact-form .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.contact-form .send { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.contact-form .status { color: var(--muted); font-size: 14px; min-height: 1.4em; }
+.contact-form .status.ok { color: var(--mint); }
+.contact-form .status.err { color: var(--rose); }
+.contact-note { color: var(--muted); font-size: 14px; margin-top: 12px; }
+@media (max-width: 860px) { .contact-grid { grid-template-columns: 1fr; gap: 24px; } }
+@media (max-width: 520px) { .contact-form .row2 { grid-template-columns: 1fr; } .contact-form { padding: 18px; } }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 </head>
@@ -254,6 +271,7 @@ footer .legal { max-width: 90ch; }
       <a href="#controle">Segurança</a>
       <a href="#planos">Preços</a>
       <a href="#faq">Dúvidas</a>
+      <a href="#contato">Contato</a>
     </nav>
     <a class="btn gold small" href="https://github.com/edufms4321/multi-idle-releases/releases/latest/download/Multi-Idle-Setup.exe" target="_blank" rel="noopener">Baixar grátis</a>
   </div>
@@ -554,6 +572,38 @@ footer .legal { max-width: 90ch; }
     </div>
   </section>
 
+  <section id="contato">
+    <div class="wrap contact-grid">
+      <div class="sec-head">
+        <p class="eyebrow">Fale comigo</p>
+        <h2>Dúvida, problema ou ideia?</h2>
+        <p class="contact-note">A mensagem chega direto para mim e eu respondo no seu e-mail. Tem um jogo idle que permite automação? Conte qual: é assim que os próximos jogos entram no app.</p>
+      </div>
+      <form class="contact-form" id="contact-form" novalidate>
+        <div class="row2">
+          <label>Seu nome <span>(opcional)</span><input name="name" maxlength="60" autocomplete="name"></label>
+          <label>E-mail para resposta<input name="email" type="email" maxlength="120" autocomplete="email" required></label>
+        </div>
+        <label>Assunto
+          <select name="topic">
+            <option value="duvida">Dúvida</option>
+            <option value="problema">Problema ou erro no app</option>
+            <option value="ideia">Ideia ou sugestão</option>
+            <option value="pagamento">Pagamento ou plano</option>
+            <option value="jogo">Sou dono de um jogo idle</option>
+            <option value="outro">Outro assunto</option>
+          </select>
+        </label>
+        <label>Mensagem<textarea name="message" maxlength="4000" required></textarea></label>
+        <div class="hp" aria-hidden="true"><label>Site<input name="website" tabindex="-1" autocomplete="off"></label></div>
+        <div class="send">
+          <button class="btn gold" type="submit">Enviar mensagem</button>
+          <span class="status" role="status" aria-live="polite"></span>
+        </div>
+      </form>
+    </div>
+  </section>
+
   <section class="final">
     <div class="wrap">
       <div class="box">
@@ -580,6 +630,7 @@ footer .legal { max-width: 90ch; }
       <nav aria-label="Rodapé">
         <a href="#planos">Preços</a>
         <a href="#faq">Dúvidas</a>
+        <a href="#contato">Fale comigo</a>
         <a href="termos.html">Termos e privacidade</a>
         <a href="https://github.com/edufms4321/multi-idle-releases/releases" target="_blank" rel="noopener">Todas as versões</a>
       </nav>
@@ -603,6 +654,32 @@ footer .legal { max-width: 90ch; }
     g.fillStyle = '#0f0c1d'; const ey = Math.floor(n * 0.4); g.fillRect(Math.floor(n * 0.3), ey, 1, 1); g.fillRect(n - 1 - Math.floor(n * 0.3), ey, 1, 1);
   }
   mascot(document.getElementById('logo'), 54);
+
+  // Fale comigo: manda para a função "contato" do Supabase (guarda e me avisa por e-mail)
+  const cf = document.getElementById('contact-form');
+  if (cf) cf.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const st = cf.querySelector('.status');
+    const btn = cf.querySelector('button[type=submit]');
+    const d = Object.fromEntries(new FormData(cf));
+    const say = (t, c) => { st.textContent = t; st.className = 'status ' + (c || ''); };
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(d.email || '').trim())) return say('Confira o e-mail para eu poder responder.', 'err');
+    if (String(d.message || '').trim().length < 5) return say('Escreva a mensagem.', 'err');
+    btn.disabled = true; say('Enviando…');
+    try {
+      const r = await fetch('https://ulprwtleeyyfewxtgshw.supabase.co/functions/v1/contato', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', apikey: 'sb_publishable_oybfI9XqYZFhNj3HvHJddg_RzH0tE5b' },
+        body: JSON.stringify({ ...d, source: 'site' }),
+      });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(j.error || 'Não deu para enviar agora.');
+      cf.reset(); say('Mensagem enviada! Respondo no seu e-mail.', 'ok');
+    } catch (err) {
+      say(err.message || 'Não deu para enviar agora. Tente de novo.', 'err');
+    } finally { btn.disabled = false; }
+  });
+
   
 
   // as 20 automações do Piloto, por categoria
