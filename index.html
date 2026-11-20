@@ -8,13 +8,21 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Multi Idle: suas contas do PokeIdle rodando juntas">
 <meta property="og:description" content="Abra até 4 contas do PokeIdle lado a lado no Windows, mantenha todas caçando com a janela minimizada e deixe a rotina com o Piloto. Grátis para até 4 contas.">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Multi Idle">
+<meta name="twitter:card" content="summary_large_image">
 <meta property="og:url" content="https://edufms4321.github.io/multi-idle/">
 <link rel="canonical" href="https://edufms4321.github.io/multi-idle/">
+<meta property="og:image" content="https://edufms4321.github.io/multi-idle/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Janela do Multi Idle com quatro contas do PokeIdle lado a lado">
 <link rel="icon" href="icon.png">
-<title>Multi Idle</title>
+<link rel="apple-touch-icon" href="icon.png">
+<title>Multi Idle: suas contas do PokeIdle rodando juntas</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=Silkscreen:wght@400;700&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=Silkscreen:wght@400;700&display=swap">
 <style>html{color-scheme:dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <style>
 /* Layout: o produto é a prova. Herói com o texto e, abaixo, a foto real do app na largura toda; depois dor x solução, Piloto, controle, limites ditos com franqueza, preço. Pixel só na marca e nos selos; dourado só nas chamadas. Tema único, escuro, igual ao app. */
@@ -38,7 +46,7 @@
   --f-display: "Bricolage Grotesque", "Figtree", system-ui, sans-serif;
   --f-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
   --f-pixel: "Silkscreen", "Courier New", monospace;
-  --f-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --f-mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -48,7 +56,7 @@ a { color: var(--gold); text-underline-offset: 3px; }
 a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
 h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; line-height: 1.1; margin: 0; letter-spacing: -.02em; }
 p { margin: 0; }
-.eyebrow { font-family: var(--f-pixel); font-size: 11.5px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); }
+.eyebrow { font-family: var(--f-pixel); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); }
 .kbd { font-family: var(--f-mono); font-size: 12.5px; padding: 1px 6px; box-shadow: inset 0 0 0 1px var(--line); background: var(--deep); white-space: nowrap; }
 .num { font-variant-numeric: tabular-nums; }
 
@@ -61,7 +69,17 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .top nav { display: flex; gap: 24px; margin-left: auto; }
 .top nav a { color: var(--muted); text-decoration: none; font-weight: 500; font-size: 15px; }
 .top nav a:hover { color: var(--ink); }
-@media (max-width: 860px) { .top nav { display: none; } .top .btn { margin-left: auto; } }
+/* celular: as seções numa faixa que rola de lado, embaixo da marca */
+@media (max-width: 860px) {
+  .top .wrap { flex-wrap: wrap; gap: 0 12px; padding-block: 8px 0; }
+  .top .btn { margin-left: auto; }
+  .top nav { order: 3; flex: 1 0 100%; margin: 6px calc(-1 * max(16px, env(safe-area-inset-left, 0px))) 0; padding-inline: max(16px, env(safe-area-inset-left, 0px)); gap: 4px; overflow-x: auto; scrollbar-width: none; -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent); mask-image: linear-gradient(90deg, #000 85%, transparent); }
+  .top nav::-webkit-scrollbar { display: none; }
+  .top nav a { flex: none; display: inline-flex; align-items: center; min-height: 40px; padding-inline: 10px; font-size: 14.5px; }
+  .top nav a:first-child { padding-left: 0; }
+}
+:target, section[id] { scroll-margin-top: 72px; }
+@media (max-width: 860px) { :target, section[id] { scroll-margin-top: 108px; } }
 
 /* botões */
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 14px 24px; font-family: var(--f-body); font-weight: 700; font-size: 16px; text-decoration: none; border: 0; cursor: pointer; background: var(--panel-2); color: var(--ink); box-shadow: inset 0 0 0 2px var(--line), 4px 4px 0 var(--shadow); transition: transform .08s, box-shadow .08s; }
@@ -70,7 +88,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .btn.gold { background: var(--gold); color: var(--gold-ink); box-shadow: inset 0 0 0 2px var(--gold-edge), 4px 4px 0 var(--shadow); }
 .btn.gold:hover { box-shadow: inset 0 0 0 2px var(--gold-edge), 5px 5px 0 var(--shadow); }
 .btn.ghost { background: transparent; box-shadow: inset 0 0 0 2px var(--line); }
-.btn.small { padding: 8px 14px; font-size: 14px; }
+.btn.small { padding: 8px 14px; font-size: 14px; min-height: 40px; }
 .btn svg { width: 18px; height: 18px; flex: none; }
 
 /* herói */
@@ -78,9 +96,16 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .hero::before { content: ""; position: absolute; inset: 0; background-image: linear-gradient(var(--line-soft) 1px, transparent 1px), linear-gradient(90deg, var(--line-soft) 1px, transparent 1px); background-size: 32px 32px; mask-image: radial-gradient(ellipse 65% 70% at 72% 45%, #000 15%, transparent 72%); -webkit-mask-image: radial-gradient(ellipse 65% 70% at 72% 45%, #000 15%, transparent 72%); opacity: .6; pointer-events: none; }
 .hero .wrap { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: 48px; }
 .hero .wrap > div:first-child { max-width: 760px; }
-.hero h1 { font-weight: 800; font-size: clamp(38px, 5.2vw, 64px); line-height: 1.02; margin-top: 16px; }
-.hero h1 em { font-style: normal; color: var(--gold); }
-.hero .lead { margin-top: 22px; font-size: 19px; color: var(--muted); max-width: 46ch; }
+.hero h1 { font-weight: 800; font-size: clamp(32px, 2.6vw + 22px, 56px); line-height: 1.04; margin-top: 16px; }
+.hero h1 em { font-style: normal; color: var(--gold); display: block; margin-top: .12em; }
+.hero .lead { margin-top: 22px; font-size: clamp(17px, .4vw + 15.5px, 19px); color: var(--muted); max-width: 46ch; }
+/* PC largo: texto à esquerda, a janela real do app à direita, saindo pela borda da tela */
+@media (min-width: 1100px) {
+  .hero { padding-block: 72px 80px; }
+  .hero .wrap { grid-template-columns: minmax(0, 33rem) minmax(0, 1fr); gap: 56px; align-items: center; }
+  .hero .shot { width: calc(100% + min(160px, max(0px, (100vw - 1160px) / 2))); }
+}
+@media (max-width: 480px) { .hero .ctas .btn { flex: 1 1 100%; } }
 .hero .ctas { margin-top: 30px; display: flex; gap: 14px; flex-wrap: wrap; }
 .sub-cta { margin-top: 14px; font-size: 14px; color: var(--muted); }
 .trust { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 14px; color: var(--muted); list-style: none; padding: 0; }
@@ -100,15 +125,15 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .facts .wrap { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; padding-block: 26px; }
 .fact b { display: block; font-family: var(--f-display); font-weight: 800; font-size: 30px; line-height: 1.1; font-variant-numeric: tabular-nums; }
 .fact span { font-size: 14px; color: var(--muted); }
-@media (max-width: 720px) { .facts .wrap { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 720px) { .facts .wrap { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 14px; padding-block: 22px; } .fact b { font-size: 26px; } .fact span { display: block; font-size: 13.5px; line-height: 1.45; margin-top: 4px; } .fact:last-child { grid-column: 1 / -1; padding-top: 18px; border-top: 1px solid var(--line-soft); } }
 
 /* seções */
 section { padding-block: 92px; }
 section + section { border-top: 1px solid var(--line-soft); }
 .sec-head { max-width: 60ch; display: grid; gap: 14px; margin-bottom: 44px; }
 .sec-head h2 { font-size: clamp(29px, 3.6vw, 44px); font-weight: 800; }
-.sec-head p { color: var(--muted); font-size: 18px; }
-@media (max-width: 600px) { section { padding-block: 60px; } }
+.sec-head p:not(.eyebrow) { color: var(--muted); font-size: 18px; }
+@media (max-width: 600px) { section { padding-block: 56px; } .sec-head { margin-bottom: 32px; } .sec-head p:not(.eyebrow) { font-size: 17px; } }
 
 /* antes e depois */
 .ba { display: grid; grid-template-columns: 1fr 1fr; box-shadow: inset 0 0 0 2px var(--line); background: var(--panel); }
@@ -145,7 +170,7 @@ section + section { border-top: 1px solid var(--line-soft); }
 .mode p { color: var(--muted); font-size: 15px; }
 @media (max-width: 420px) { .mode { grid-template-columns: 1fr; } .mode .tag { width: fit-content; padding: 4px 8px; } }
 .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin: 56px 0 18px; }
-.tab { font-family: var(--f-body); font-weight: 700; font-size: 15px; padding: 9px 16px; border: 0; cursor: pointer; background: transparent; color: var(--muted); box-shadow: inset 0 0 0 2px var(--line); }
+.tab { font-family: var(--f-body); font-weight: 700; font-size: 15px; padding: 9px 16px; min-height: 44px; border: 0; cursor: pointer; background: transparent; color: var(--muted); box-shadow: inset 0 0 0 2px var(--line); }
 .tab:hover { color: var(--ink); }
 .tab[aria-selected="true"] { background: var(--gold); color: var(--gold-ink); box-shadow: inset 0 0 0 2px var(--gold-edge); }
 .recipes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-content: start; }
@@ -187,11 +212,12 @@ section + section { border-top: 1px solid var(--line-soft); }
 /* preços */
 .prices { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; align-items: stretch; }
 @media (max-width: 1000px) { .prices { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1001px) { .price h3 { min-height: 2.4em; } } /* preços na mesma linha, mesmo com o nome do plano em duas */
 @media (max-width: 560px) { .prices { grid-template-columns: 1fr; } }
 .price { position: relative; padding: 26px 22px; background: var(--panel); box-shadow: inset 0 0 0 2px var(--line); display: flex; flex-direction: column; gap: 14px; }
 .price.best { background: var(--panel-2); box-shadow: inset 0 0 0 3px var(--gold), 8px 8px 0 var(--shadow); }
 .price .ribbon { position: absolute; top: -12px; left: 22px; font-family: var(--f-pixel); font-size: 10.5px; letter-spacing: 1px; padding: 3px 10px; background: var(--gold); color: var(--gold-ink); }
-.price h3 { font-family: var(--f-body); font-size: 14px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; }
+.price h3 { font-family: var(--f-display); font-size: 21px; font-weight: 700; color: var(--ink); letter-spacing: -.01em; line-height: 1.2; }
 .amount { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
 .amount .cur { font-size: 18px; font-weight: 600; color: var(--muted); }
 .amount .val { font-family: var(--f-display); font-size: 44px; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
@@ -213,7 +239,8 @@ table.compare { width: 100%; border-collapse: collapse; min-width: 540px; font-s
 .compare thead th:last-child { color: var(--gold); }
 .compare td:not(:first-child), .compare th:not(:first-child) { text-align: center; width: 20%; }
 .compare tbody tr:last-child td { border-bottom: 0; }
-.yes { color: var(--mint); font-weight: 600; } .no { color: var(--muted); opacity: .6; }
+.yes { color: var(--mint); font-weight: 600; } .no { color: var(--muted); }
+@media (max-width: 600px) { table.compare { min-width: 0; font-size: 14px; } .compare th, .compare td { padding: 12px 10px; } .compare td:not(:first-child), .compare th:not(:first-child) { width: 26%; } }
 
 /* FAQ */
 .faq-grid { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.6fr); gap: 48px; align-items: start; }
@@ -238,7 +265,7 @@ footer .wrap { display: grid; gap: 14px; }
 footer .rowf { display: flex; flex-wrap: wrap; gap: 12px 28px; align-items: center; }
 footer .brandf { font-family: var(--f-pixel); color: var(--gold); letter-spacing: 1px; font-size: 14px; }
 footer nav { margin-left: auto; display: flex; gap: 20px; flex-wrap: wrap; }
-footer a { color: var(--muted); text-decoration: none; } footer a:hover { color: var(--ink); }
+footer a { color: var(--muted); text-decoration: none; display: inline-block; padding-block: 8px; } footer a:hover { color: var(--ink); }
 footer .legal { max-width: 90ch; }
 
 /* Fale comigo */
@@ -377,13 +404,13 @@ dialog.buy::backdrop { background: rgba(5, 4, 11, .78); }
   <div class="wrap">
     <a class="brand" href="#inicio" aria-label="Multi Idle, início"><canvas id="logo" width="16" height="16" aria-hidden="true"></canvas>MULTI IDLE</a>
     <nav aria-label="Seções">
+      <a href="#regras">Dá ban?</a>
       <a href="#recursos">Recursos</a>
       <a href="#piloto">Piloto</a>
-      <a href="#mercado">Mercado</a>
-      <a href="#regras">Dá ban?</a>
       <a href="#controle">Segurança</a>
       <a href="#planos">Preços</a>
       <a href="#faq">Dúvidas</a>
+      <a href="#mercado">Mercado</a>
       <a href="#contato">Contato</a>
     </nav>
     <a class="btn gold small" href="https://github.com/edufms4321/multi-idle-releases/releases/latest/download/Multi-Idle-Setup.exe" target="_blank" rel="noopener">Baixar grátis</a>
@@ -450,7 +477,7 @@ dialog.buy::backdrop { background: rgba(5, 4, 11, .78); }
           <li><b>23:55</b><span>Escreve o resumo do dia de cada conta. Grátis.</span></li>
         </ul>
       </div>
-      <video src="img/demo-piloto.mp4" poster="img/demo-piloto.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Vídeo de 38 segundos: o Pilo mostra, com telas reais do app, o que o Piloto fez nas contas durante a noite"></video>
+      <video src="img/demo-piloto.mp4" poster="img/demo-piloto.jpg" width="340" height="604" autoplay muted loop playsinline preload="metadata" aria-label="Vídeo de 38 segundos: o Pilo mostra, com telas reais do app, o que o Piloto fez nas contas durante a noite"></video>
     </div>
   </section>
 
@@ -618,112 +645,6 @@ dialog.buy::backdrop { background: rgba(5, 4, 11, .78); }
     </div>
   </section>
 
-  <section id="mercado">
-    <div class="wrap">
-      <div class="sec-head">
-        <p class="eyebrow">Para consulta</p>
-        <h2>Como funciona o Mercado (RMT) do PokeIdle</h2>
-        <p>O PokeIdle deixa vender itens por Gemas e sacar as Gemas pelo próprio jogo. Aqui está como isso funciona de verdade, com números que medimos em 14 e 15/11/2026. Spoiler: dá centavos, não salário.</p>
-      </div>
-
-      <div class="coins3">
-        <div class="coin">
-          <svg viewBox="0 0 10 10" aria-hidden="true"><path fill="#8a6400" d="M3 0h4v1h2v2h1v4H9v2H7v1H3V9H1V7H0V3h1V1h2z"/><path fill="#ffd23f" d="M3 1h4v1h1v1h1v4H8v1H7v1H3V8H2V7H1V3h1V2h1z"/><path fill="#fff1a8" d="M3 2h2v1H4v2H3z"/></svg>
-          <h3>Coins</h3>
-          <p>Caem caçando, o tempo todo. Compram poções, pokémon e itens no Mercado. Não saem do jogo.</p>
-          <span class="tagx" style="color:var(--muted)">NÃO SACÁVEL</span>
-        </div>
-        <div class="coin">
-          <svg viewBox="0 0 10 10" aria-hidden="true"><path fill="#8a1f33" d="M2 1h6v1h1v2H8v1H7v1H6v2H4V6H3V5H2V4H1V2h1z"/><path fill="#ff4d6d" d="M2 2h6v2H7v1H6v1H4V5H3V4H2z"/><path fill="#ffc2cd" d="M3 2h2v1H3z"/></svg>
-          <h3>Gemas (vermelhas)</h3>
-          <p>Compradas no jogo a cerca de US$ 0,01 cada e sacáveis pelo próprio jogo a cerca de US$ 0,009 cada. É a moeda que vende e compra itens raros.</p>
-          <span class="tagx" style="color:#ff6b86">SACÁVEL NO JOGO</span>
-        </div>
-        <div class="coin">
-          <svg viewBox="0 0 10 10" aria-hidden="true"><path fill="#1f4f8a" d="M2 1h6v1h1v2H8v1H7v1H6v2H4V6H3V5H2V4H1V2h1z"/><path fill="#74b8ff" d="M2 2h6v2H7v1H6v1H4V5H3V4H2z"/><path fill="#d6ebff" d="M3 2h2v1H3z"/></svg>
-          <h3>Diamantes (azuis)</h3>
-          <p>Moeda de uso dentro do jogo. Não pode ser sacada nem vira Gemas no saque.</p>
-          <span class="tagx" style="color:var(--muted)">NÃO SACÁVEL</span>
-        </div>
-      </div>
-
-      <h3 class="mk-h">O caminho de um item até virar Gemas</h3>
-      <p class="mk-sub">Cada passo tem dono. O app ajuda a enxergar e a decidir; vender e sacar são decisões suas.</p>
-      <ol class="flow" aria-label="Caminho de um item até o saque">
-        <li><span class="who" style="color:var(--sky)">JOGO</span><b>Caçar</b><span>Na Outland, treinador nível 150+.</span></li>
-        <li><span class="who" style="color:var(--sky)">JOGO</span><b>Drop raro</b><span>Token ~1 em 2 mil abates; fragmento ~1 em 200 mil.</span></li>
-        <li><span class="who" style="color:var(--gold)">APP</span><b>Mochila</b><span>O app lê e mostra quanto vale cada item.</span></li>
-        <li class="you"><span class="who" style="color:var(--amber)">VOCÊ</span><b>Anúncio</b><span>O Vendedor propõe o preço; você aprova cada um.</span></li>
-        <li><span class="who" style="color:var(--sky)">JOGO</span><b>Comissão</b><span>15% arredondado para cima, por anúncio.</span></li>
-        <li><span class="who" style="color:var(--sky)">JOGO</span><b>Gemas</b><span>O que sobra cai na sua conta do jogo.</span></li>
-        <li class="you"><span class="who" style="color:var(--amber)">VOCÊ</span><b>Saque</b><span>Feito por você, no jogo. O app nunca saca.</span></li>
-      </ol>
-
-      <h3 class="mk-h">A comissão é por anúncio: junte antes de anunciar</h3>
-      <p class="mk-sub">O jogo cobra 15% de cada anúncio de item e arredonda para cima. Em itens baratos, o arredondamento pesa muito.</p>
-      <div class="fee">
-        <div class="bad">
-          <h4>1 token por 3 Gemas</h4>
-          <div class="bar" role="img" aria-label="Das 3 Gemas, 1 vai de comissão e 2 ficam com você"><i class="k" style="width:66.6%"></i><i class="t" style="width:33.4%"></i></div>
-          <p><span class="big">33%</span> de comissão: 15% de 3 é 0,45, que vira 1 Gema. Você recebe 2.</p>
-        </div>
-        <div class="good">
-          <h4>3 tokens juntos por 9 Gemas</h4>
-          <div class="bar" role="img" aria-label="Das 9 Gemas, 2 vão de comissão e 7 ficam com você"><i class="k" style="width:77.7%"></i><i class="t" style="width:22.3%"></i></div>
-          <p><span class="big">22%</span> de comissão: 15% de 9 é 1,35, que vira 2 Gemas. Você recebe 7.</p>
-        </div>
-      </div>
-
-      <h3 class="mk-h">Anúncio novo não vai para quem clicar primeiro</h3>
-      <p class="mk-sub">Todo anúncio novo fica 2 minutos retido. Quando libera, quem pedir a compra nos primeiros ~3 segundos entra num sorteio do próprio jogo, que escolhe um comprador. Não é leilão: ninguém paga mais por isso, e clicar mais rápido não garante nada.</p>
-      <ol class="tl" aria-label="Linha do tempo de um anúncio novo">
-        <li><b>Anúncio criado</b><span>O vendedor publica.</span></li>
-        <li class="hold"><b>2 min retido</b><span>Aparece, mas ninguém compra ainda.</span></li>
-        <li class="on"><b>Libera</b><span>O botão de comprar acende.</span></li>
-        <li class="rush"><b>~3 s</b><span>Pedidos entram na fila.</span></li>
-        <li class="on"><b>Sorteio</b><span>O jogo escolhe um dos pedidos.</span></li>
-        <li class="end"><b>Comprador</b><span>Um leva; os outros não pagam nada.</span></li>
-      </ol>
-
-      <h3 class="mk-h">O que vende de verdade</h3>
-      <p class="mk-sub">Medido no Mercado da Comunidade em 14 e 15/11/2026. Preço anunciado não é garantia de venda, e os valores mudam toda semana.</p>
-      <div class="mk-table">
-        <table>
-          <thead><tr><th scope="col">Item</th><th scope="col">Preço visto</th><th scope="col">Como anda</th></tr></thead>
-          <tbody>
-            <tr><td>Bronze Boss Token</td><td>~3 Gemas</td><td>O mais negociado: cerca de 600 mil vendidos por semana.</td></tr>
-            <tr><td>Fragmento de Chave</td><td>~230 Gemas</td><td>Raro e procurado.</td></tr>
-            <tr><td>Fragmento de Shiny Stone</td><td>~89 Gemas</td><td>Raro e procurado.</td></tr>
-            <tr><td>Fragmento de MEGA Shiny</td><td>~540 Gemas</td><td>O mais caro da lista, e o mais raro.</td></tr>
-            <tr><td>Tickets</td><td>varia</td><td>Vendem, com preço que muda por evento.</td></tr>
-            <tr><td>Pedras de evolução</td><td>2 Gemas (piso)</td><td>Paradas no preço mínimo. Só valem a pena em Coins.</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="mk-note">Câmbio observado: 1 Gema ≈ 4,8 milhões de Coins. Drops raros só caem na Outland (treinador nível 150+): token cerca de 0,05% por abate, fragmentos cerca de 0,0005%.</p>
-
-      <div class="honest">
-        <div class="math">
-          <h3>A conta honesta</h3>
-          <div class="row"><span>4 contas caçando Coins o dia todo</span><b>~US$ 0,05/dia</b></div>
-          <div class="row"><span>Drops raros na Outland, por dia</span><b>alguns centavos</b></div>
-          <p>Isso é o que medimos, não uma promessa: pode ser menos. O Multi Idle não é para ganhar dinheiro. É para jogar melhor: menos tempo cuidando de conta, mais XP, tudo organizado e a tranquilidade de saber o que cada item vale.</p>
-        </div>
-        <div class="tools">
-          <h3>O que o app faz no Mercado (Pro)</h3>
-          <ul>
-            <li><span><b>Banco de preços:</b> lê os preços de hora em hora, em Coins e em Gemas.</span></li>
-            <li><span><b>O que tenho para vender:</b> mostra quanto vale o que está na Mochila.</span></li>
-            <li><span><b>Vendedor:</b> propõe o anúncio já com a comissão na conta. Você aprova cada um.</span></li>
-            <li><span><b>Caçador de pechincha:</b> compra até o seu teto em Coins, entra no sorteio da liberação e mostra os sorteios ganhos e perdidos.</span></li>
-            <li><span><b>Boletim do Mercado:</b> toda semana, o que subiu e o que caiu.</span></li>
-            <li><span><b>Saque:</b> sempre manual, feito por você no jogo.</span></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <section id="comecar">
     <div class="wrap">
       <div class="sec-head">
@@ -867,6 +788,112 @@ dialog.buy::backdrop { background: rgba(5, 4, 11, .78); }
           <div class="ans"><p>Por enquanto só no Windows 10 e 11. O jogo continua funcionando no celular: quando você sai dele, o Multi Idle retoma a conta no PC.</p></div></details>
         <details><summary>Ainda não jogo PokeIdle. Por onde começo?</summary>
           <div class="ans"><p>Instale o Multi Idle, aperte <span class="kbd">Ctrl+N</span> e escolha "Criar conta nova no PokeIdle". O jogo é gratuito e roda no navegador.</p></div></details>
+      </div>
+    </div>
+  </section>
+
+  <section id="mercado">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Para consulta</p>
+        <h2>Como funciona o Mercado (RMT) do PokeIdle</h2>
+        <p>O PokeIdle deixa vender itens por Gemas e sacar as Gemas pelo próprio jogo. Aqui está como isso funciona de verdade, com números que medimos em 14 e 15/11/2026. Spoiler: dá centavos, não salário.</p>
+      </div>
+
+      <div class="coins3">
+        <div class="coin">
+          <svg viewBox="0 0 10 10" aria-hidden="true"><path fill="#8a6400" d="M3 0h4v1h2v2h1v4H9v2H7v1H3V9H1V7H0V3h1V1h2z"/><path fill="#ffd23f" d="M3 1h4v1h1v1h1v4H8v1H7v1H3V8H2V7H1V3h1V2h1z"/><path fill="#fff1a8" d="M3 2h2v1H4v2H3z"/></svg>
+          <h3>Coins</h3>
+          <p>Caem caçando, o tempo todo. Compram poções, pokémon e itens no Mercado. Não saem do jogo.</p>
+          <span class="tagx" style="color:var(--muted)">NÃO SACÁVEL</span>
+        </div>
+        <div class="coin">
+          <svg viewBox="0 0 10 10" aria-hidden="true"><path fill="#8a1f33" d="M2 1h6v1h1v2H8v1H7v1H6v2H4V6H3V5H2V4H1V2h1z"/><path fill="#ff4d6d" d="M2 2h6v2H7v1H6v1H4V5H3V4H2z"/><path fill="#ffc2cd" d="M3 2h2v1H3z"/></svg>
+          <h3>Gemas (vermelhas)</h3>
+          <p>Compradas no jogo a cerca de US$ 0,01 cada e sacáveis pelo próprio jogo a cerca de US$ 0,009 cada. É a moeda que vende e compra itens raros.</p>
+          <span class="tagx" style="color:#ff6b86">SACÁVEL NO JOGO</span>
+        </div>
+        <div class="coin">
+          <svg viewBox="0 0 10 10" aria-hidden="true"><path fill="#1f4f8a" d="M2 1h6v1h1v2H8v1H7v1H6v2H4V6H3V5H2V4H1V2h1z"/><path fill="#74b8ff" d="M2 2h6v2H7v1H6v1H4V5H3V4H2z"/><path fill="#d6ebff" d="M3 2h2v1H3z"/></svg>
+          <h3>Diamantes (azuis)</h3>
+          <p>Moeda de uso dentro do jogo. Não pode ser sacada nem vira Gemas no saque.</p>
+          <span class="tagx" style="color:var(--muted)">NÃO SACÁVEL</span>
+        </div>
+      </div>
+
+      <h3 class="mk-h">O caminho de um item até virar Gemas</h3>
+      <p class="mk-sub">Cada passo tem dono. O app ajuda a enxergar e a decidir; vender e sacar são decisões suas.</p>
+      <ol class="flow" aria-label="Caminho de um item até o saque">
+        <li><span class="who" style="color:var(--sky)">JOGO</span><b>Caçar</b><span>Na Outland, treinador nível 150+.</span></li>
+        <li><span class="who" style="color:var(--sky)">JOGO</span><b>Drop raro</b><span>Token ~1 em 2 mil abates; fragmento ~1 em 200 mil.</span></li>
+        <li><span class="who" style="color:var(--gold)">APP</span><b>Mochila</b><span>O app lê e mostra quanto vale cada item.</span></li>
+        <li class="you"><span class="who" style="color:var(--amber)">VOCÊ</span><b>Anúncio</b><span>O Vendedor propõe o preço; você aprova cada um.</span></li>
+        <li><span class="who" style="color:var(--sky)">JOGO</span><b>Comissão</b><span>15% arredondado para cima, por anúncio.</span></li>
+        <li><span class="who" style="color:var(--sky)">JOGO</span><b>Gemas</b><span>O que sobra cai na sua conta do jogo.</span></li>
+        <li class="you"><span class="who" style="color:var(--amber)">VOCÊ</span><b>Saque</b><span>Feito por você, no jogo. O app nunca saca.</span></li>
+      </ol>
+
+      <h3 class="mk-h">A comissão é por anúncio: junte antes de anunciar</h3>
+      <p class="mk-sub">O jogo cobra 15% de cada anúncio de item e arredonda para cima. Em itens baratos, o arredondamento pesa muito.</p>
+      <div class="fee">
+        <div class="bad">
+          <h4>1 token por 3 Gemas</h4>
+          <div class="bar" role="img" aria-label="Das 3 Gemas, 1 vai de comissão e 2 ficam com você"><i class="k" style="width:66.6%"></i><i class="t" style="width:33.4%"></i></div>
+          <p><span class="big">33%</span> de comissão: 15% de 3 é 0,45, que vira 1 Gema. Você recebe 2.</p>
+        </div>
+        <div class="good">
+          <h4>3 tokens juntos por 9 Gemas</h4>
+          <div class="bar" role="img" aria-label="Das 9 Gemas, 2 vão de comissão e 7 ficam com você"><i class="k" style="width:77.7%"></i><i class="t" style="width:22.3%"></i></div>
+          <p><span class="big">22%</span> de comissão: 15% de 9 é 1,35, que vira 2 Gemas. Você recebe 7.</p>
+        </div>
+      </div>
+
+      <h3 class="mk-h">Anúncio novo não vai para quem clicar primeiro</h3>
+      <p class="mk-sub">Todo anúncio novo fica 2 minutos retido. Quando libera, quem pedir a compra nos primeiros ~3 segundos entra num sorteio do próprio jogo, que escolhe um comprador. Não é leilão: ninguém paga mais por isso, e clicar mais rápido não garante nada.</p>
+      <ol class="tl" aria-label="Linha do tempo de um anúncio novo">
+        <li><b>Anúncio criado</b><span>O vendedor publica.</span></li>
+        <li class="hold"><b>2 min retido</b><span>Aparece, mas ninguém compra ainda.</span></li>
+        <li class="on"><b>Libera</b><span>O botão de comprar acende.</span></li>
+        <li class="rush"><b>~3 s</b><span>Pedidos entram na fila.</span></li>
+        <li class="on"><b>Sorteio</b><span>O jogo escolhe um dos pedidos.</span></li>
+        <li class="end"><b>Comprador</b><span>Um leva; os outros não pagam nada.</span></li>
+      </ol>
+
+      <h3 class="mk-h">O que vende de verdade</h3>
+      <p class="mk-sub">Medido no Mercado da Comunidade em 14 e 15/11/2026. Preço anunciado não é garantia de venda, e os valores mudam toda semana.</p>
+      <div class="mk-table">
+        <table>
+          <thead><tr><th scope="col">Item</th><th scope="col">Preço visto</th><th scope="col">Como anda</th></tr></thead>
+          <tbody>
+            <tr><td>Bronze Boss Token</td><td>~3 Gemas</td><td>O mais negociado: cerca de 600 mil vendidos por semana.</td></tr>
+            <tr><td>Fragmento de Chave</td><td>~230 Gemas</td><td>Raro e procurado.</td></tr>
+            <tr><td>Fragmento de Shiny Stone</td><td>~89 Gemas</td><td>Raro e procurado.</td></tr>
+            <tr><td>Fragmento de MEGA Shiny</td><td>~540 Gemas</td><td>O mais caro da lista, e o mais raro.</td></tr>
+            <tr><td>Tickets</td><td>varia</td><td>Vendem, com preço que muda por evento.</td></tr>
+            <tr><td>Pedras de evolução</td><td>2 Gemas (piso)</td><td>Paradas no preço mínimo. Só valem a pena em Coins.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="mk-note">Câmbio observado: 1 Gema ≈ 4,8 milhões de Coins. Drops raros só caem na Outland (treinador nível 150+): token cerca de 0,05% por abate, fragmentos cerca de 0,0005%.</p>
+
+      <div class="honest">
+        <div class="math">
+          <h3>A conta honesta</h3>
+          <div class="row"><span>4 contas caçando Coins o dia todo</span><b>~US$ 0,05/dia</b></div>
+          <div class="row"><span>Drops raros na Outland, por dia</span><b>alguns centavos</b></div>
+          <p>Isso é o que medimos, não uma promessa: pode ser menos. O Multi Idle não é para ganhar dinheiro. É para jogar melhor: menos tempo cuidando de conta, mais XP, tudo organizado e a tranquilidade de saber o que cada item vale.</p>
+        </div>
+        <div class="tools">
+          <h3>O que o app faz no Mercado (Pro)</h3>
+          <ul>
+            <li><span><b>Banco de preços:</b> lê os preços de hora em hora, em Coins e em Gemas.</span></li>
+            <li><span><b>O que tenho para vender:</b> mostra quanto vale o que está na Mochila.</span></li>
+            <li><span><b>Vendedor:</b> propõe o anúncio já com a comissão na conta. Você aprova cada um.</span></li>
+            <li><span><b>Caçador de pechincha:</b> compra até o seu teto em Coins, entra no sorteio da liberação e mostra os sorteios ganhos e perdidos.</span></li>
+            <li><span><b>Boletim do Mercado:</b> toda semana, o que subiu e o que caiu.</span></li>
+            <li><span><b>Saque:</b> sempre manual, feito por você no jogo.</span></li>
+          </ul>
+        </div>
       </div>
     </div>
   </section>
@@ -1171,6 +1198,10 @@ dialog.buy::backdrop { background: rgba(5, 4, 11, .78); }
     g.fillStyle = '#0f0c1d'; const ey = Math.floor(n * 0.4); g.fillRect(Math.floor(n * 0.3), ey, 1, 1); g.fillRect(n - 1 - Math.floor(n * 0.3), ey, 1, 1);
   }
   mascot(document.getElementById('logo'), 54);
+
+  // quem pediu menos movimento no sistema vê o vídeo parado, com os controles
+  const vid = document.querySelector('#demo video');
+  if (vid && matchMedia('(prefers-reduced-motion: reduce)').matches) { vid.removeAttribute('autoplay'); vid.pause(); vid.controls = true; }
 
   // Fale comigo: manda para a função "contato" do Supabase (guarda e me avisa por e-mail)
   const cf = document.getElementById('contact-form');
